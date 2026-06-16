@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DRAPE — Fashion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sand: #F5F2EE;
+    --ink: #1A1714;
+    --mink: #7A6A60;
+    --clay: #C4A882;
+    --stone: #DDD8D1;
+    --white: #FFFFFF;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--white); color: var(--ink); overflow-x: hidden; }
+
+  /* TICKER */
+  .ticker-wrap {
+    background: var(--ink);
+    color: var(--white);
+    overflow: hidden;
+    height: 36px;
+    display: flex;
+    align-items: center;
+  }
+  .ticker-track {
+    display: flex;
+    gap: 0;
+    animation: ticker 28s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-track span {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0 48px;
+  }
+  .ticker-track span::after {
+    content: '·';
+    margin-left: 48px;
+  }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--white);
+    border-bottom: 1px solid var(--stone);
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    gap: 20px;
+  }
+  .nav-hamburger {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 4px;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 22px;
+    height: 1.5px;
+    background: var(--ink);
+    transition: opacity 0.2s;
+  }
+  .nav-hamburger:hover span { opacity: 0.5; }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    flex: 1;
+  }
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .nav-actions a {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 8px 14px;
+    border: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .nav-actions a:hover { border-color: var(--stone); }
+  .nav-actions a.btn-fill {
+    background: var(--ink);
+    color: var(--white);
+    border-color: var(--ink);
+  }
+  .nav-actions a.btn-fill:hover { background: #333; border-color: #333; }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    height: 88vh;
+    min-height: 520px;
+    background: var(--sand);
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(160deg, #EDE8E1 0%, #D9CFC4 60%, #C8BAA8 100%);
+  }
+  .hero-texture {
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 80px,
+      rgba(160,140,120,0.06) 80px,
+      rgba(160,140,120,0.06) 81px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 80px,
+      rgba(160,140,120,0.06) 80px,
+      rgba(160,140,120,0.06) 81px
+    );
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 56px 72px;
+    max-width: 680px;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--mink);
+    margin-bottom: 20px;
+  }
+  .hero-headline {
+    font-family: var(--serif);
+    font-size: clamp(52px, 7vw, 96px);
+    font-weight: 300;
+    line-height: 0.95;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 28px;
+  }
+  .hero-headline em {
+    font-style: italic;
+    color: var(--mink);
+  }
+  .hero-sub {
+    font-size: 14px;
+    color: var(--mink);
+    letter-spacing: 0.04em;
+    margin-bottom: 40px;
+    max-width: 340px;
+    line-height: 1.7;
+  }
+  .hero-ctas { display: flex; gap: 16px; align-items: center; }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--white);
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid var(--ink);
+    padding: 16px 36px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn-primary:hover { background: transparent; color: var(--ink); }
+  .btn-ghost {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--mink);
+    padding-bottom: 2px;
+    transition: color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--mink); }
+  .hero-tag {
+    position: absolute;
+    right: 56px;
+    bottom: 80px;
+    font-family: var(--serif);
+    font-size: 13px;
+    font-style: italic;
+    color: var(--mink);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    letter-spacing: 0.08em;
+  }
+
+  /* SECTION WRAPPER */
+  .section {
+    padding: 80px 40px;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 36px;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+  }
+  .section-link {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--stone);
+    padding-bottom: 2px;
+    transition: border-color 0.2s;
+  }
+  .section-link:hover { border-color: var(--mink); }
+
+  /* SHOP BY CATEGORY */
+  .category-section { background: var(--white); padding: 72px 40px; }
+  .cat-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--stone);
+    margin-bottom: 40px;
+    width: fit-content;
+  }
+  .cat-tab {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 12px 28px;
+    cursor: pointer;
+    color: var(--mink);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: var(--sans);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .cat-tab:hover { color: var(--ink); }
+  .cat-tab.active { color: var(--ink); border-bottom-color: var(--ink); }
+  .sub-categories {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .sub-cat {
+    background: var(--sand);
+    aspect-ratio: 4/3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 28px;
+    cursor: pointer;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .sub-cat:hover { background: #EDE5D9; }
+  .sub-cat-label {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+  }
+  .sub-cat-count {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mink);
+    margin-top: 6px;
+  }
+  .sub-cat-icon {
+    position: absolute;
+    top: 28px;
+    right: 28px;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--stone);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--mink);
+    font-size: 14px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .sub-cat:hover .sub-cat-icon { background: var(--ink); color: var(--white); border-color: var(--ink); }
+
+  /* PRODUCT GRID */
+  .products-section { background: var(--sand); }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  .product-card {
+    background: var(--white);
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s;
+  }
+  .product-card:hover { transform: translateY(-2px); }
+  .product-img {
+    aspect-ratio: 3/4;
+    background: var(--stone);
+    position: relative;
+    overflow: hidden;
+  }
+  .product-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .product-placeholder svg { opacity: 0.18; }
+  .product-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    background: var(--ink);
+    color: var(--white);
+  }
+  .product-badge.new { background: var(--clay); color: var(--white); }
+  .product-badge.sale { background: #8B3A3A; color: var(--white); }
+  .product-info { padding: 16px 18px 20px; }
+  .product-name {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+  }
+  .product-cat {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mink);
+    margin-bottom: 10px;
+  }
+  .product-price {
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .product-price .orig { color: var(--mink); text-decoration: line-through; margin-right: 8px; font-weight: 400; }
+
+  /* BEST SELLERS — same grid but with bg variation */
+  .bestsellers-section { background: var(--white); }
+
+  /* PROMO BANNER */
+  .promo-section {
+    padding: 0 40px 80px;
+    background: var(--white);
+  }
+  .promo-banner {
+    background: var(--ink);
+    color: var(--white);
+    padding: 64px 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  .promo-text { }
+  .promo-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--clay);
+    margin-bottom: 16px;
+  }
+  .promo-headline {
+    font-family: var(--serif);
+    font-size: clamp(32px, 4vw, 54px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    margin-bottom: 20px;
+  }
+  .promo-headline em { font-style: italic; color: var(--clay); }
+  .promo-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    max-width: 380px;
+    line-height: 1.7;
+  }
+  .promo-cta {
+    flex-shrink: 0;
+  }
+  .btn-light {
+    background: var(--white);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: none;
+    padding: 18px 44px;
+    text-decoration: none;
+    display: inline-block;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .btn-light:hover { background: var(--sand); }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.6);
+    padding: 60px 40px 40px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 32px;
+  }
+  .footer-brand-name {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+  .footer-tagline {
+    font-size: 13px;
+    line-height: 1.7;
+    max-width: 240px;
+    margin-bottom: 28px;
+  }
+  .footer-socials { display: flex; gap: 12px; }
+  .footer-social {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.5);
+    font-size: 14px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .footer-social:hover { background: rgba(255,255,255,0.1); color: var(--white); }
+  .footer-col-title {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .footer-links a {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--white); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+  }
+  .footer-bottom a { color: rgba(255,255,255,0.4); text-decoration: none; margin-left: 20px; }
+  .footer-bottom a:hover { color: rgba(255,255,255,0.7); }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--stone); margin: 0 40px; }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 20px; }
+    .hero-content { padding: 0 24px 48px; }
+    .hero-tag { display: none; }
+    .sub-categories { grid-template-columns: 1fr 1fr; }
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .promo-banner { flex-direction: column; padding: 44px 32px; }
+    .section { padding: 56px 20px; }
+    .category-section { padding: 56px 20px; }
+    .promo-section { padding: 0 20px 56px; }
+    .divider { margin: 0 20px; }
+  }
+  @media (max-width: 560px) {
+    .sub-categories { grid-template-columns: 1fr; }
+    .product-grid { grid-template-columns: 1fr 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TICKER STRIP -->
+<div class="ticker-wrap" aria-label="Announcements">
+  <div class="ticker-track" aria-hidden="true">
+    <span>Free shipping on orders above ₹2,000</span>
+    <span>New Summer Collection — now live</span>
+    <span>Easy 30-day returns</span>
+    <span>Members get 10% off everything</span>
+    <span>Free shipping on orders above ₹2,000</span>
+    <span>New Summer Collection — now live</span>
+    <span>Easy 30-day returns</span>
+    <span>Members get 10% off everything</span>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav role="navigation" aria-label="Main navigation">
+  <button class="nav-hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a href="#" class="nav-logo">Drape</a>
+  <div class="nav-actions">
+    <a href="#">Login</a>
+    <a href="#" class="btn-fill">Register</a>
+  </div>
+</nav>
+
+<!-- HERO BANNER -->
+<section class="hero" aria-label="Hero">
+  <div class="hero-bg"></div>
+  <div class="hero-texture" aria-hidden="true"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Summer 2025 Collection</p>
+    <h1 class="hero-headline">Dressed<br />in <em>quiet</em><br />intention.</h1>
+    <p class="hero-sub">Timeless silhouettes, considered fabrics, and a palette that moves with you.</p>
+    <div class="hero-ctas">
+      <a href="#" class="btn-primary">Shop now</a>
+      <a href="#" class="btn-ghost">Explore the edit</a>
+    </div>
+  </div>
+  <p class="hero-tag" aria-hidden="true">New arrivals · Summer '25</p>
+</section>
+
+<!-- SHOP BY CATEGORY -->
+<section class="category-section" aria-label="Shop by category">
+  <div class="section-header">
+    <h2 class="section-title">Shop by category</h2>
+  </div>
+  <div class="cat-tabs" role="tablist">
+    <button class="cat-tab active" role="tab" aria-selected="true" onclick="setTab(this)">Men</button>
+    <button class="cat-tab" role="tab" aria-selected="false" onclick="setTab(this)">Women</button>
+    <button class="cat-tab" role="tab" aria-selected="false" onclick="setTab(this)">Kids</button>
+  </div>
+  <div class="sub-categories">
+    <a href="#" class="sub-cat">
+      <div class="sub-cat-icon" aria-hidden="true">→</div>
+      <span class="sub-cat-label">Clothes</span>
+      <span class="sub-cat-count">248 pieces</span>
+    </a>
+    <a href="#" class="sub-cat">
+      <div class="sub-cat-icon" aria-hidden="true">→</div>
+      <span class="sub-cat-label">Accessories</span>
+      <span class="sub-cat-count">114 pieces</span>
+    </a>
+    <a href="#" class="sub-cat">
+      <div class="sub-cat-icon" aria-hidden="true">→</div>
+      <span class="sub-cat-label">Footwear</span>
+      <span class="sub-cat-count">86 pieces</span>
+    </a>
+  </div>
+</section>
+
+<!-- NEW ARRIVALS -->
+<section class="section products-section" aria-labelledby="new-arrivals-title">
+  <div class="section-header">
+    <h2 class="section-title" id="new-arrivals-title">New arrivals</h2>
+    <a href="#" class="section-link">View all</a>
+  </div>
+  <div class="product-grid">
+    <!-- Card 1 -->
+    <a href="#" class="product-card">
+      <div class="product-img">
+        <div class="product-placeholder">
+          <svg width="60" height="80" viewBox="0 0 60 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="15" y="0" width="30" height="40" rx="2" fill="#1A1714"/>
+            <rect x="5" y="40" width="50" height="40" rx="2" fill="#1A1714"/>
+          </svg>
+        </div>
+        <span class="product-badge new">New</span>
+      </div>
+      <div class="product-info">
+        <p class="product-cat">Women · Tops</p>
+        <p class="product-name">Linen Wrap Blouse</p>
+        <p class="product-price">₹2,490</p>
+      </div>
+    </a>
+    <!-- Card 2 -->
+    <a href="#" class="product-card">
+      <div class="product-img" style="background: #E8E0D6;">
+        <div class="product-placeholder">
+          <svg width="48" height="80" viewBox="0 0 48 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="0" width="32" height="80" rx="2" fill="#7A6A60"/>
+          </svg>
+        </div>
+        <span class="product-badge new">New</span>
+      </div>
+      <div class="product-info">
+        <p class="product-cat">Men · Bottoms</p>
+        <p class="product-name">Relaxed Chino Trouser</p>
+        <p class="product-price">₹3,190</p>
+      </div>
+    </a>
+    <!-- Card 3 -->
+    <a href="#" class="product-card">
+      <div class="product-img" style="background: #D9CFC4;">
+        <div class="product-placeholder">
+          <svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="35" cy="35" r="30" fill="#C4A882" opacity="0.5"/>
+            <circle cx="35" cy="35" r="16" fill="#C4A882"/>
+          </svg>
+        </div>
+        <span class="product-badge new">New</span>
+      </div>
+      <div class="product-info">
+        <p class="product-cat">Accessories</p>
+        <p class="product-name">Woven Straw Hat</p>
+        <p class="product-price">₹1,290</p>
+      </div>
+    </a>
+    <!-- Card 4 -->
+    <a href="#" class="product-card">
+      <div class="product-img" style="background: #EAE6E0;">
+        <div class="product-placeholder">
+          <svg width="50" height="70" viewBox="0 0 50 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="25" cy="20" rx="20" ry="20" fill="#DDD8D1"/>
+            <rect x="10" y="35" width="30" height="35" rx="2" fill="#DDD8D1"/>
+          </svg>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="product-cat">Footwear · Women</p>
+        <p class="product-name">Suede Block Mule</p>
+        <p class="product-price">₹4,590</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- BEST SELLERS -->
+<section class="section bestsellers-section" aria-labelledby="bestsellers-title">
+  <div class="section-header">
+    <h2 class="section-title" id="bestsellers-title">Best sellers</h2>
+    <a href="#" class="section-link">View all</a>
+  </div>
+  <div class="product-grid">
+    <!-- Card 1 -->
+    <a href="#" class="product-card">
+      <div class="product-img" style="background: #EDE8E1;">
+        <div class="product-placeholder">
+          <svg width="60" height="78" viewBox="0 0 60 78" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="0" width="50" height="78" rx="3" fill="#C4A882" opacity="0.4"/>
+            <rect x="15" y="12" width="30" height="2" rx="1" fill="#7A6A60"/>
+            <rect x="15" y="20" width="22" height="2" rx="1" fill="#7A6A60"/>
+          </svg>
+        </div>
+        <span class="product-badge" style="background:#7A6A60">Best seller</span>
+      </div>
+      <div class="product-info">
+        <p class="product-cat">Women · Dresses</p>
+        <p class="product-name">Midi Slip Dress</p>
+        <p class="product-price">₹3,890</p>
+      </div>
+    </a>
+    <!-- Card 2 -->
+    <a href="#" class="product-card">
+      <div class="product-img" style="background: #DDD8D1;">
+        <div class="product-placeholder">
+          <svg width="64" height="72" viewBox="0 0 64 72" fill="none">
+            <rect x="0" y="20" width="64" height="52" rx="3" fill="#7A6A60" opacity="0.3"/>
+            <path d="M 32 0 L 64 20 L 0 20 Z" fill="#7A6A60" opacity="0.4"/>
+          </svg>
+        </div>
+        <span class="product-badge" style="background:#7A6A60">Best seller</span>
+      </div>
+      <div class="product-info">
+        <p class="product-cat">Men · Outerwear</p>
+        <p class="product-name">Structured Blazer</p>
+        <p class="product-price">₹6,290</p>
+      </div>
+    </a>
+    <!-- Card 3 -->
+    <a href="#" class="product-card">
+      <div class="product-img" style="background: #F0EDE8;">
+        <div class="product-placeholder">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+            <rect x="4" y="12" width="48" height="36" rx="4" fill="#C4A882" opacity="0.5"/>
+            <rect x="20" y="4" width="16" height="12" rx="2" fill="#C4A882" opacity="0.4"/>
+          </svg>
+        </div>
+        <span class="product-badge sale">Sale</span>
+      </div>
+      <div class="product-info">
+        <p class="product-cat">Accessories</p>
+        <p class="product-name">Canvas Tote Bag</p>
+        <p class="product-price"><span class="orig">₹1,890</span>₹1,290</p>
+      </div>
+    </a>
+    <!-- Card 4 -->
+    <a href="#" class="product-card">
+      <div class="product-img" style="background: #E8E4DC;">
+        <div class="product-placeholder">
+          <svg width="44" height="74" viewBox="0 0 44 74" fill="none">
+            <rect x="6" y="10" width="32" height="52" rx="3" fill="#1A1714" opacity="0.2"/>
+            <ellipse cx="22" cy="68" rx="18" ry="6" fill="#1A1714" opacity="0.15"/>
+          </svg>
+        </div>
+        <span class="product-badge" style="background:#7A6A60">Best seller</span>
+      </div>
+      <div class="product-info">
+        <p class="product-cat">Footwear · Men</p>
+        <p class="product-name">Derby Leather Oxford</p>
+        <p class="product-price">₹5,490</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- PROMOTIONAL BANNER -->
+<section class="promo-section" aria-label="Promotional offer">
+  <div class="promo-banner">
+    <div class="promo-text">
+      <p class="promo-eyebrow">Members exclusive</p>
+      <h2 class="promo-headline">Your wardrobe,<br /><em>rewarded.</em></h2>
+      <p class="promo-desc">Join Drape Members and unlock 10% off every order, early access to new drops, and free express shipping — always.</p>
+    </div>
+    <div class="promo-cta">
+      <a href="#" class="btn-light">Join free</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <p class="footer-brand-name">Drape</p>
+      <p class="footer-tagline">Thoughtfully made clothes for everyday life. Quality you can feel, at prices that respect you.</p>
+      <div class="footer-socials">
+        <a href="#" class="footer-social" aria-label="Instagram">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="#" class="footer-social" aria-label="Pinterest">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.236 2.636 7.855 6.356 9.312-.088-.791-.167-2.005.035-2.868.181-.78 1.172-4.97 1.172-4.97s-.299-.598-.299-1.482c0-1.388.806-2.428 1.808-2.428.852 0 1.265.64 1.265 1.408 0 .858-.546 2.14-.828 3.33-.236.995.499 1.806 1.476 1.806 1.771 0 3.135-1.867 3.135-4.563 0-2.386-1.715-4.053-4.163-4.053-2.836 0-4.498 2.127-4.498 4.326 0 .856.33 1.775.741 2.277a.3.3 0 0 1 .069.285c-.076.31-.243.994-.277 1.134-.044.183-.146.222-.337.134C5.99 16.52 5 14.67 5 12.553 5 9.293 7.418 6.29 11.64 6.29c3.426 0 6.09 2.44 6.09 5.702 0 3.403-2.145 6.141-5.122 6.141-1.001 0-1.941-.52-2.264-1.134l-.615 2.296c-.223.858-.823 1.932-1.226 2.586.924.286 1.902.44 2.917.44C17.523 22 22 17.523 22 12S17.523 2 12 2z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div>
+      <p class="footer-col-title">Shop</p>
+      <ul class="footer-links">
+        <li><a href="#">New arrivals</a></li>
+        <li><a href="#">Women</a></li>
+        <li><a href="#">Men</a></li>
+        <li><a href="#">Kids</a></li>
+        <li><a href="#">Accessories</a></li>
+        <li><a href="#">Sale</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Help</p>
+      <ul class="footer-links">
+        <li><a href="#">Size guide</a></li>
+        <li><a href="#">Track order</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Shipping info</a></li>
+        <li><a href="#">FAQs</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Company</p>
+      <ul class="footer-links">
+        <li><a href="#">About us</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Drape. All rights reserved.</p>
+    <div>
+      <a href="#">Privacy policy</a>
+      <a href="#">Terms of use</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function setTab(btn) {
+    document.querySelectorAll('.cat-tab').forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+  }
+</script>
+</body>
+</html>
