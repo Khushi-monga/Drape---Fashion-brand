@@ -47,7 +47,7 @@ def login_view(request):
 
                 access_token, refresh_token = generate_tokens(user)
 
-                response = redirect("register")
+                response = redirect("home")
 
                 response.set_cookie(
                     key="access_token",
@@ -63,6 +63,7 @@ def login_view(request):
                     httponly=True,
                     samesite="Lax",
                     secure=True,  # True in production
+                    max_age=60 * 15,
                 )
 
                 return response
@@ -80,3 +81,11 @@ def login_view(request):
         "login.html",
         {"form": form}
     )
+
+def logout_view(request):
+    response = redirect("home")
+
+    response.delete_cookie("access_token")
+    response.delete_cookie("refresh_token")
+
+    return response

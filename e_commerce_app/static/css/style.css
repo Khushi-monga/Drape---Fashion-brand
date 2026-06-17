@@ -67,8 +67,20 @@ body{font-family:var(--sans);background:var(--white);color:var(--ink);overflow-x
 .nav-actions a.btn-fill:hover{background:#333;border-color:#333}
 .nav-icon-btn{background:none;border:none;cursor:pointer;padding:8px;color:var(--ink);display:flex;align-items:center;position:relative;transition:opacity .2s}
 .nav-icon-btn:hover{opacity:.5}
-.nav-icon-btn .badge{position:absolute;top:4px;right:4px;width:14px;height:14px;background:var(--clay);color:var(--white);font-size:8px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:500}
+.nav-icon-btn .badge{position:absolute;top:4px;right:4px;width:20px;height:20px;background:var(--clay);color:var(--white);font-size:8px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:500}
+.profile-avatar {
+    width: 38px;
+    height: 38px;
+    border: 1.5px solid #1A1714;
+    border-radius: 50%;
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+    text-decoration: none;
+}
 /* ── SECONDARY NAV (mega-menu) ── */
 .nav-secondary{
   position:sticky;top:66px;z-index:190;background:var(--white);
@@ -545,3 +557,4 @@ grid-template-columns: repeat(2, 1fr);
 padding: 80px 20px 56px;
 }
 }
+
