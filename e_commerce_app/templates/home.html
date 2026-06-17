@@ -36,7 +36,6 @@
     class="nav-search-bar"
     id="navSearchBar"
     method="GET"
-    action="{% url 'search_products' %}"
 >
     <input type="search"name="q"value="{{ query|default:'' }}" placeholder="Search styles, brands…" aria-label="Search" id="searchInput" autocomplete="off"/>
     <button type="submit" class="search-icon" aria-label="Search">
