@@ -7,6 +7,12 @@ from .jwt_utils import generate_tokens, verify_token
 class JWTAuthenticationMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
+
+        # Skip JWT processing for Django admin
+        if request.path.startswith("/admin/"):
+            return None  # just pass through normally
+
+
         access_token = request.COOKIES.get("access_token")
         refresh_token = request.COOKIES.get("refresh_token")
 
