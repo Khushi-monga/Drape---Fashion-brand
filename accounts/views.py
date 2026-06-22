@@ -6,6 +6,7 @@ from .otp_utils import create_or_update_otp, send_otp_email
 from django.contrib.auth.models import User
 from django.utils import timezone
 from .models import EmailVerificationOTP
+from django.conf import settings
 
 
 def register(request):
@@ -33,11 +34,14 @@ def register(request):
     else:
         form = RegistrationForm()
 
-    context = {
-        "form": form
-    }
-
-    return render(request, "register.html", context)
+    return render(
+        request,
+        "register.html",
+        {
+            "form": form,
+            "google_client_id": settings.GOOGLE_CLIENT_ID,
+        }
+    )
 
 
 
@@ -173,7 +177,10 @@ def login_view(request):
     return render(
         request,
         "login.html",
-        {"form": form}
+        {
+            "form": form,
+            "google_client_id": settings.GOOGLE_CLIENT_ID,
+        }
     )
 
 def logout_view(request):

@@ -1,55 +1,4 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <title>Login</title>
-    
-</head>
-<body>
-
-    <h1>Login</h1>
-
-    {% if form.non_field_errors %}
-        <ul>
-            {% for error in form.non_field_errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
-    <form method="POST" action="{% url 'login' %}">
-        {% csrf_token %}
-
-        {{ form.as_p }}
-
-        <button type="submit">
-            Login
-        </button>
-    </form>
-
-    <hr>
-
-    <div id="g_id_onload"
-        data-client_id="{{ google_client_id }}"
-        data-callback="handleCredentialResponse"
-        data-auto_prompt="false">
-    </div>
-
-    <div class="g_id_signin"
-        data-type="standard"
-        data-size="large"
-        data-theme="outline"
-        data-text="continue_with"
-        data-shape="rectangular">
-    </div>
-
-    
-    <script>
-        function getCookie(name)
+function getCookie(name)
 {
     let cookieValue = null;
 
@@ -131,7 +80,3 @@ async function handleCredentialResponse(response)
         );
     }
 }
-    </script>
-
-</body>
-</html>

@@ -1,6 +1,7 @@
 from django.urls import path
-from . import views
+from .views import google_auth_view
 
 urlpatterns = [
-    # Add sub-app specific routes here
+    path(
+        "google/", google_auth_view, name="google_auth"),
 ]

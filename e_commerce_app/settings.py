@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     
     
     'accounts',
-    'accounts.social_auth.apps.SocialAuthConfig'
+    'accounts.social_auth'
 
 ]
 
@@ -150,3 +150,7 @@ EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+
+
+
+GOOGLE_CLIENT_ID = config("GOOGLE_CLIENT_ID")

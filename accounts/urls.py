@@ -7,5 +7,5 @@ urlpatterns = [
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
     path("verify-otp/", verify_otp_view, name="verify_otp"),
-    path('social_auth/', include('apps.social_auth.urls'), name="social_auth"), 
+    path('social-auth/', include('accounts.social_auth.urls'), name="social_auth"), 
 ]
