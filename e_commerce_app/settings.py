@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     
     
     'accounts',
-    'accounts.social_auth'
 
 ]
 
@@ -151,6 +150,10 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 
-
-
 GOOGLE_CLIENT_ID = config("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = config("GOOGLE_CLIENT_SECRET")
+SECURE_REFERRER_POLICY = "no-referrer-when-downgrade"
+GOOGLE_REDIRECT_URI= config(
+    "http://localhost:8000/accounts/google/callback/",
+    "http://127.0.0.1:8000/accounts/google/callback/"
+)

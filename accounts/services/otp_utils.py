@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
 
-from .models import EmailVerificationOTP
+from ..models import EmailVerificationOTP
 
 
 def generate_otp():

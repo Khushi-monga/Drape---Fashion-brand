@@ -4,134 +4,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <title>Login</title>
-    
+    <title>Login — Drape</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
 </head>
 <body>
 
-    <h1>Login</h1>
+<section class="auth-page">
 
-    {% if form.non_field_errors %}
-        <ul>
-            {% for error in form.non_field_errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    <div class="auth-left">
+        <p class="auth-eyebrow">
+            Welcome Back
+        </p>
+        <div class="hero-line"></div>
 
-    <form method="POST" action="{% url 'login' %}">
-        {% csrf_token %}
+        <h1 class="auth-title">
+            Sign in to<br>
+            <em class="brand-word">Drape.</em>
+        </h1>
 
-        {{ form.as_p }}
+        <p class="auth-copy">
+            Continue your fashion journey with curated styles,
+            exclusive collections, and seamless shopping.
+        </p>
+    </div>
 
-        <button type="submit">
+    <div class="auth-card">
+
+        <h2 class="card-title">
             Login
-        </button>
-    </form>
+        </h2>
 
-    <hr>
+        {% if form.non_field_errors %}
+            <div class="error-box">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-    <div id="g_id_onload"
-        data-client_id="{{ google_client_id }}"
-        data-callback="handleCredentialResponse"
-        data-auto_prompt="false">
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="btn-primary">
+                Login
+            </button>
+        </form>
+
+        <br>
+
+        <div class="auth-links">
+
+            <a href="{% url 'forgot_password' %}">
+                Forgot Password?
+            </a>
+
+        </div>
+
+        <div class="divider">
+            <span>or</span>
+        </div>
+
+        <a
+            href="{% url 'google_login' %}"
+            class="btn-google"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 48 48"
+                class="google-icon"
+                aria-hidden="true"
+            >
+                <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303C33.655 32.657 29.233 36 24 36c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.276 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
+                <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.276 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
+                <path fill="#4CAF50" d="M24 44c5.177 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.146 35.091 26.676 36 24 36c-5.212 0-9.621-3.329-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
+                <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-1.014 2.886-3.057 5.215-5.684 6.57l.003-.002 6.19 5.238C35.369 39.408 44 33 44 24c0-1.341-.138-2.65-.389-3.917z"/>
+            </svg>
+
+            Continue with Google
+        </a>
+
+        <p class="auth-footer">
+            Don't have an account?
+            <a href="{% url 'register' %}">
+                Register
+            </a>
+        </p>
+
     </div>
 
-    <div class="g_id_signin"
-        data-type="standard"
-        data-size="large"
-        data-theme="outline"
-        data-text="continue_with"
-        data-shape="rectangular">
-    </div>
-
-    
-    <script>
-        function getCookie(name)
-{
-    let cookieValue = null;
-
-    if (document.cookie && document.cookie !== "")
-    {
-        const cookies = document.cookie.split(";");
-
-        for (let cookie of cookies)
-        {
-            cookie = cookie.trim();
-
-            if (
-                cookie.substring(
-                    0,
-                    name.length + 1
-                ) === (name + "=")
-            )
-            {
-                cookieValue = decodeURIComponent(
-                    cookie.substring(
-                        name.length + 1
-                    )
-                );
-
-                break;
-            }
-        }
-    }
-
-    return cookieValue;
-}
-
-
-async function handleCredentialResponse(response)
-{
-    console.log("CALLBACK HIT");
-    console.log(response);
-
-    alert("Google callback reached");
-    
-    try
-    {
-        const result = await fetch(
-            "/accounts/social-auth/google/",
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": getCookie("csrftoken"),
-                },
-
-                body: JSON.stringify({
-                    token: response.credential
-                })
-            }
-        );
-
-        const data = await result.json();
-
-        if (data.success)
-        {
-            window.location.href = "/";
-        }
-        else
-        {
-            alert(
-                data.error ||
-                "Google login failed."
-            );
-        }
-    }
-    catch (error)
-    {
-        console.error(error);
-
-        alert(
-            "Something went wrong."
-        );
-    }
-}
-    </script>
+</section>
 
 </body>
 </html>

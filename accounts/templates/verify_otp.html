@@ -1,23 +1,131 @@
-<h1>Verify Email</h1>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Email — Drape</title>
 
-<form method="POST">
-    {% csrf_token %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <label for="otp">Enter OTP</label>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
-    <input
-        type="text"
-        name="otp"
-        id="otp"
-        maxlength="6"
-        required
-    >
+    <link rel="stylesheet" href="{% static 'css/verify_otp.css' %}">
+</head>
 
-    <button type="submit">
-        Verify
-    </button>
-</form>
+<body>
 
-{% if error %}
-    <p>{{ error }}</p>
-{% endif %}
+<section class="auth-page">
+
+    <div class="auth-left">
+
+        <p class="auth-eyebrow">
+            Almost There
+        </p>
+
+        <div class="hero-line"></div>
+
+        <h1 class="auth-title">
+            Verify your<br>
+            <em class="brand-word">Email.</em>
+        </h1>
+
+        <p class="auth-copy">
+            We've sent a one-time verification code to your email address.
+            Enter it below to complete your account creation and begin your
+            journey with Drape.
+        </p>
+
+    </div>
+
+    <div class="auth-card">
+
+        <h2 class="card-title">
+            Verification
+        </h2>
+
+        {% if error %}
+            <div class="error-box">
+                <p>{{ error }}</p>
+            </div>
+        {% endif %}
+
+        {% if otp_resent %}
+            <div class="success-box">
+                <p>
+                    A new verification code has been sent to your email.
+                </p>
+            </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="otp-group">
+
+                <label for="otp">
+                    Verification Code
+                </label>
+
+                <input
+                    type="text"
+                    name="otp"
+                    id="otp"
+                    maxlength="6"
+                    pattern="[0-9]{6}"
+                    inputmode="numeric"
+                    autocomplete="one-time-code"
+                    placeholder="123456"
+                    required
+                >
+
+            </div>
+
+            <p class="otp-expiry">
+                This verification code expires in
+                <strong>10 minutes</strong>.
+            </p>
+
+            <button
+                type="submit"
+                class="btn-primary"
+            >
+                Verify OTP
+            </button>
+
+        </form>
+
+        <div class="divider"></div>
+
+        <p class="resend-text">
+            Didn't receive the code?
+        </p>
+
+        <form
+            method="POST"
+            action="{% url 'resend_otp' %}"
+        >
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="btn-secondary"
+            >
+                Resend OTP
+            </button>
+        </form>
+
+        <p class="auth-footer">
+            Return to
+            <a href="{% url 'register' %}">
+                Registration
+            </a>
+        </p>
+
+    </div>
+
+</section>
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AnonymousUser, User
 from django.utils.deprecation import MiddlewareMixin
 
-from .jwt_utils import generate_tokens, verify_token
+from .services.jwt_utils import generate_tokens, verify_token
 
 
 class JWTAuthenticationMiddleware(MiddlewareMixin):
