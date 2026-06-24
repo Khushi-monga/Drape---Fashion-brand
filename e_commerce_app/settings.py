@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     
     
     'accounts',
+    'cart',
     'products',
 
 ]
@@ -83,7 +84,7 @@ WSGI_APPLICATION = 'e_commerce_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ecommerce',
+        'NAME': 'ecommerce2',
         'USER': 'khush',
         'PASSWORD': 'khush',
         'HOST': 'localhost',
@@ -137,7 +138,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 JWT_SECRET_KEY = SECRET_KEY
 JWT_ALGORITHM = "HS256"
 JWT_ACCESS_EXPIRATION_MINUTES = 15
-JWT_REFRESH_EXPIRATION_DAYS = 3
+JWT_REFRESH_EXPIRATION_DAYS = 10
 
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

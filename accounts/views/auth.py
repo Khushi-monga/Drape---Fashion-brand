@@ -175,7 +175,6 @@ class LoginView(FormView):
             httponly=True,
             samesite="Lax",
             secure=True,
-            max_age=60 * 15,
         )
 
         return response
