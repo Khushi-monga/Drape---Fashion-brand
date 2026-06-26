@@ -36,25 +36,31 @@
     class="nav-search-bar"
     id="navSearchBar"
     method="GET"
+    action="{% url 'product_search' %}"
 >
-    <input type="search"name="q"value="{{ query|default:'' }}" placeholder="Search styles, brands…" aria-label="Search" id="searchInput" autocomplete="off"/>
-    <button type="submit" class="search-icon" aria-label="Search">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
+    <input
+        type="search"
+        name="q"
+        value="{{ query|default:'' }}"
+        placeholder="Search styles, brands…"
+        aria-label="Search"
+        id="searchInput"
+        autocomplete="off"
+    />
+
+    <button
+        type="submit"
+        class="search-icon"
+        aria-label="Search"
+    >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="11" cy="11" r="7"/>
+            <line x1="16.5" y1="16.5" x2="22" y2="22"/>
+        </svg>
     </button>
+
     <div class="search-suggestions" id="searchSuggestions">
-      <p class="suggestion-label">Trending</p>
-      <div class="suggestion-item">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-        Linen co-ords
-      </div>
-      <div class="suggestion-item">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-        Midi dresses
-      </div>
-      <div class="suggestion-item">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-        Block mules
-      </div>
+        ...
     </div>
 </form>
 
