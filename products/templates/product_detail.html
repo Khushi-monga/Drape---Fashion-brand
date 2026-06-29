@@ -1,0 +1,119 @@
+{% extends "search_results_base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/product_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="product-page">
+
+    <div class="breadcrumb">
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        /
+
+        <span>
+
+            {{ product.category.name }}
+
+        </span>
+
+        /
+
+        <span>
+
+            {{ product.name }}
+
+        </span>
+
+    </div>
+
+
+    <div class="product-main">
+
+        <div class="product-image">
+
+            {% if product.image %}
+
+                <img
+                    src="{{ product.image.url }}"
+                    alt="{{ product.name }}"
+                >
+
+            {% else %}
+
+                <div class="image-placeholder">
+
+                    No Image Available
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="product-details">
+
+            {% if product.brand %}
+
+                <p class="brand">
+
+                    {{ product.brand.name }}
+
+                </p>
+
+            {% endif %}
+
+            <h1>
+
+                {{ product.name }}
+
+            </h1>
+
+            <p class="category">
+
+                {{ product.category.name }}
+
+            </p>
+
+            <p class="price">
+
+                ₹{{ product.base_price }}
+
+            </p>
+
+            <p class="gender">
+
+                {{ product.get_gender_display }}
+
+            </p>
+
+            {% if product.description %}
+
+                <div class="description">
+
+                    <h3>Description</h3>
+
+                    <p>
+
+                        {{ product.description }}
+
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

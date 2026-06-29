@@ -22,9 +22,9 @@ class GoogleLoginView(View):
 
     def get(self, request):
 
-        state = secrets.token_urlsafe(32)
+        # state = secrets.token_urlsafe(32)
 
-        request.session["google_oauth_state"] = state
+        # request.session["google_oauth_state"] = state
 
         params = {
             "client_id": settings.GOOGLE_CLIENT_ID,
@@ -33,7 +33,7 @@ class GoogleLoginView(View):
             "scope": "openid email profile",
             "access_type": "offline",
             "prompt": "select_account",
-            "state": state,
+            #"state": state,
         }
 
         auth_url = (
@@ -41,7 +41,7 @@ class GoogleLoginView(View):
             + urlencode(params)
         )
 
-        print("STATE GENERATED:", state)
+        #print("STATE GENERATED:", state)
         print("AUTH URL:", auth_url)
 
         return redirect(auth_url)
@@ -51,15 +51,15 @@ class GoogleLoginView(View):
 class GoogleCallbackView(View):
     def get(self, request):
 
-        state = request.GET.get("state")
-        expected_state = request.session.pop(
-            "google_oauth_state",
-            None,
-        )
-        if not state or state != expected_state:
-            return HttpResponseBadRequest(
-                "Invalid OAuth state."
-            )
+        # state = request.GET.get("state")
+        # expected_state = request.session.pop(
+        #     "google_oauth_state",
+        #     None,
+        # )
+        # if not state or state != expected_state:
+        #     return HttpResponseBadRequest(
+        #         "Invalid OAuth state."
+        #     )
 
         code = request.GET.get("code")
 
@@ -109,10 +109,10 @@ class GoogleCallbackView(View):
                     "Invalid token issuer."
                 )
 
-        except GoogleAuthError:
-            return HttpResponseBadRequest(
-                "Invalid Google token."
-            )
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return HttpResponseBadRequest(str(e))
 
         email = payload.get("email")
 
