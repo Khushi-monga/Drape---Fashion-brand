@@ -40,10 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    
+    'django.contrib.postgres',
     'accounts',
     'cart',
-    'products',
+
+    "products.apps.ProductsConfig"
 
 ]
 

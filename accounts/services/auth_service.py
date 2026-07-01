@@ -12,6 +12,7 @@ def login_user_response(user):
         httponly=True,
         samesite="Lax",
         secure=True,
+        max_age=60 * 15,
     )
 
     response.set_cookie(
@@ -20,7 +21,7 @@ def login_user_response(user):
         httponly=True,
         samesite="Lax",
         secure=True,
-        max_age=60 * 15,
+        max_age=60*60*24*10,
     )
 
     return response

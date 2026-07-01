@@ -8,6 +8,7 @@ from django.utils import timezone
 
 from accounts.forms import RegistrationForm, LoginForm
 from accounts.services.jwt_utils import generate_tokens
+from accounts.services.auth_service import login_user_response
 from accounts.services.otp_utils import create_or_update_otp, send_otp_email
 from accounts.models import EmailVerificationOTP
 
@@ -20,7 +21,6 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 
 from accounts.services.social_auth import get_or_create_google_user
-from accounts.services.auth_service import login_user_response
 from django.conf import settings
 
 class RegisterView(FormView):
@@ -157,27 +157,7 @@ class LoginView(FormView):
             form.add_error(None, "Invalid username or password.")
             return self.form_invalid(form)
 
-        access_token, refresh_token = generate_tokens(user)
-
-        response = redirect("home")
-
-        response.set_cookie(
-            key="access_token",
-            value=access_token,
-            httponly=True,
-            samesite="Lax",
-            secure=True,
-        )
-
-        response.set_cookie(
-            key="refresh_token",
-            value=refresh_token,
-            httponly=True,
-            samesite="Lax",
-            secure=True,
-        )
-
-        return response
+        return login_user_response(user)
     
 
 

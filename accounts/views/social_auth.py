@@ -16,6 +16,7 @@ from accounts.services.social_auth import (
     get_or_create_google_user,
 )
 from accounts.services.jwt_utils import generate_tokens
+from accounts.services.auth_service import login_user_response
 
 
 class GoogleLoginView(View):
@@ -145,26 +146,4 @@ class GoogleCallbackView(View):
             last_name=last_name,
         )
 
-        access_token, refresh_token = generate_tokens(
-            user
-        )
-
-        response = redirect("home")
-
-        response.set_cookie(
-            key="access_token",
-            value=access_token,
-            httponly=True,
-            samesite="Lax",
-            secure=True,
-        )
-
-        response.set_cookie(
-            key="refresh_token",
-            value=refresh_token,
-            httponly=True,
-            samesite="Lax",
-            secure=True,
-        )
-
-        return response
+        return login_user_response(user)

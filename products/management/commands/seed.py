@@ -1,132 +1,231 @@
+import random
 from django.core.management.base import BaseCommand
 from django.utils.text import slugify
-from decimal import Decimal
-import random
 
-from products.models import Category, Brand, Product
+from products.models import Product, Brand, Category
+
+from products.seed_data.brands import BRANDS
+from products.seed_data.clothing import CLOTHING
+from products.seed_data.footwear import FOOTWEAR
+from products.seed_data.accessories import ACCESSORIES
+
+
+CATEGORY_MAP = {
+    "Clothing": CLOTHING,
+    "Footwear": FOOTWEAR,
+    "Accessories": ACCESSORIES,
+}
+
+
+# class Command(BaseCommand):
+#     help = "Seed products with generated fashion data"
+
+#     def handle(self, *args, **options):
+#         self.stdout.write("Starting seeding...")
+
+#         self.create_brands()
+#         self.create_products()
+
+#         self.stdout.write(self.style.SUCCESS("Seeding completed."))
+
+#     # -------------------------
+#     # Step 1: Create brands
+#     # -------------------------
+#     def create_brands(self):
+#         self.stdout.write("Creating brands...")
+
+#         for name in BRANDS:
+#             Brand.objects.get_or_create(name=name)
+
+#         self.stdout.write(self.style.SUCCESS("Brands ready."))
+
+#     # -------------------------
+#     # Step 2: Create products
+#     # -------------------------
+#     def create_products(self):
+#         self.stdout.write("Creating products...")
+
+#         for category_name, dataset in CATEGORY_MAP.items():
+
+#             category = Category.objects.get(name=category_name)
+
+#             for product_type, config in dataset.items():
+
+#                 # generate multiple products per type
+#                 for _ in range(10):  # adjust later (10 per type for now)
+
+#                     brand = Brand.objects.order_by("?").first()
+
+#                     material = random.choice(config["materials"])
+#                     fit = random.choice(config.get("fits", [""])) or ""
+#                     style = random.choice(config.get("styles", [""])) or ""
+#                     gender = random.choice(config["genders"])
+
+#                     name = f"{fit} {style} {material} {product_type}".replace("  ", " ").strip()
+
+#                     base_price = random.randint(
+#                         config["price_range"][0],
+#                         config["price_range"][1]
+#                     )
+
+#                     sku = self.generate_sku(brand.name, product_type)
+
+#                     tags = config["tags"] + [
+#                         material.lower(),
+#                         fit.lower(),
+#                         style.lower(),
+#                         product_type.lower(),
+#                         brand.name.lower(),
+#                     ]
+
+#                     base_slug = slugify(f"{brand.name}-{name}")
+
+#                     slug = base_slug[:140]  # keep safe for DB
+
+#                     Product.objects.create(
+#                         category=category,
+#                         brand=brand,
+#                         name=name,
+#                         slug=slug,
+#                         sku=sku,
+#                         description=f"{name} designed for everyday comfort and modern style.",
+#                         base_price=base_price,
+#                         gender=gender,
+#                         search_tags=",".join(tags),
+#                         is_active=True,
+#                     )
+
+#         self.stdout.write(self.style.SUCCESS("Products created."))
+
+#     # -------------------------
+#     # Step 3: SKU generator
+#     # -------------------------
+#     def generate_sku(self, brand, product_type):
+#         prefix = brand[:3].upper()
+#         type_code = product_type[:3].upper()
+#         number = random.randint(1000, 9999)
+
+#         return f"{prefix}-{type_code}-{number}"
+    
+
+
+
+# import random
+# from django.core.management.base import BaseCommand
+# from django.utils.text import slugify
+
+# from products.models import Product, Brand, Category
+
+# from products.seed_data.brands import BRANDS
+# from products.seed_data.clothing import CLOTHING
+# from products.seed_data.footwear import FOOTWEAR
+# from products.seed_data.accessories import ACCESSORIES
+
+
+# CATEGORY_MAP = {
+#     "Clothing": CLOTHING,
+#     "Footwear": FOOTWEAR,
+#     "Accessories": ACCESSORIES,
+# }
 
 
 class Command(BaseCommand):
+    help = "Seed products safely (idempotent + duplicate-safe)"
 
-    help = "Seed products database"
+    def handle(self, *args, **options):
+        self.stdout.write("Starting seeding...")
 
-    def handle(self, *args, **kwargs):
+        self.create_brands()
+        self.create_products()
 
-        categories = [
-            "Clothing",
-            "Footwear",
-            "Accessories",
-        ]
+        self.stdout.write(self.style.SUCCESS("Seeding completed."))
 
-        brands = [
-            "Nike",
-            "Adidas",
-            "Puma",
-            "Reebok",
-            "Levis",
-            "H&M",
-            "Zara",
-            "Woodland",
-            "Allen Solly",
-            "Van Heusen",
-            "US Polo",
-            "Tommy Hilfiger",
-            "Jack & Jones",
-            "Roadster",
-            "Wrogn",
-        ]
+    # -------------------------
+    # BRANDS
+    # -------------------------
+    def create_brands(self):
+        self.stdout.write("Creating brands...")
 
-        clothing_products = [
-            "Classic T-Shirt",
-            "Oversized T-Shirt",
-            "Slim Fit Shirt",
-            "Formal Shirt",
-            "Casual Shirt",
-            "Denim Jacket",
-            "Hoodie",
-            "Sweatshirt",
-            "Cargo Pants",
-            "Slim Fit Jeans",
-            "Track Pants",
-            "Joggers",
-        ]
+        for name in BRANDS:
+            Brand.objects.get_or_create(name=name)
 
-        footwear_products = [
-            "Running Shoes",
-            "Sneakers",
-            "Training Shoes",
-            "Casual Shoes",
-            "Leather Boots",
-            "Sports Shoes",
-            "Slip On Shoes",
-            "Canvas Shoes",
-        ]
+        self.stdout.write(self.style.SUCCESS("Brands ready."))
 
-        accessory_products = [
-            "Leather Wallet",
-            "Backpack",
-            "Cap",
-            "Belt",
-            "Sunglasses",
-            "Travel Bag",
-            "Laptop Bag",
-            "Sports Cap",
-        ]
+    # -------------------------
+    # PRODUCTS
+    # -------------------------
+    def create_products(self):
+        self.stdout.write("Creating products...")
 
-        category_objects = {}
+        brands = list(Brand.objects.all())
 
-        for category_name in categories:
+        for category_name, dataset in CATEGORY_MAP.items():
 
-            category, _ = Category.objects.get_or_create(
-                name=category_name,
-                defaults={
-                    "slug": slugify(category_name),
-                }
-            )
+            category = Category.objects.get(name=category_name)
 
-            category_objects[category_name] = category
+            for product_type, config in dataset.items():
 
-        brand_objects = []
+                for _ in range(10):
 
-        for brand_name in brands:
+                    brand = random.choice(brands)
 
-            brand, _ = Brand.objects.get_or_create(
-                name=brand_name,
-                defaults={
-                    "slug": slugify(brand_name),
-                }
-            )
+                    material = random.choice(config["materials"])
+                    fit = random.choice(config.get("fits", [""])) or ""
+                    style = random.choice(config.get("styles", [""])) or ""
+                    gender = random.choice(config["genders"])
 
-            brand_objects.append(brand)
+                    name = f"{fit} {style} {material} {product_type}".replace("  ", " ").strip()
 
-        for i in range(100):
+                    base_price = random.randint(
+                        config["price_range"][0],
+                        config["price_range"][1]
+                    )
 
-            category_name = random.choice(categories)
+                    sku = self.generate_sku(brand.name)
 
-            if category_name == "Clothing":
-                base_name = random.choice(clothing_products)
+                    base_slug = slugify(f"{brand.name}-{name}")
+                    slug = self.generate_unique_slug(base_slug)
 
-            elif category_name == "Footwear":
-                base_name = random.choice(footwear_products)
+                    tags = list(set(
+                        config["tags"]
+                        + [material, fit, style, product_type, brand.name]
+                    ))
 
-            else:
-                base_name = random.choice(accessory_products)
+                    Product.objects.get_or_create(
+                        sku=sku,
+                        defaults={
+                            "category": category,
+                            "brand": brand,
+                            "name": name,
+                            "slug": slug[:140],
+                            "description": f"{name} designed for everyday wear and modern style.",
+                            "base_price": base_price,
+                            "gender": gender,
+                            "search_tags": " ".join([t.lower() for t in tags]),
+                            "is_active": True,
+                        }
+                    )
 
-            name = f"{base_name} {i}"
+        self.stdout.write(self.style.SUCCESS("Products ready."))
 
-            Product.objects.create(
-                category=category_objects[category_name],
-                brand=random.choice(brand_objects),
-                name=name,
-                slug=slugify(name),
-                description=f"Premium quality {name}.",
-                base_price=Decimal(random.randint(299, 7999)),
-                gender=random.choice(["M", "W", "U"]),
-                is_active=True,
-            )
+    # -------------------------
+    # SKU GENERATOR (SAFE)
+    # -------------------------
+    def generate_sku(self, brand):
+        while True:
+            sku = f"{brand[:3].upper()}-{random.randint(100000, 999999)}"
+            if not Product.objects.filter(sku=sku).exists():
+                return sku
 
-        self.stdout.write(
-            self.style.SUCCESS(
-                "Successfully created 100 products."
-            )
-        )
+    # -------------------------
+    # SLUG GENERATOR (SAFE)
+    # -------------------------
+    def generate_unique_slug(self, base_slug):
+        slug = base_slug[:140]
+        counter = 1
+
+        while Product.objects.filter(slug=slug).exists():
+            slug = f"{base_slug[:135]}-{counter}"
+            counter += 1
+
+        return slug

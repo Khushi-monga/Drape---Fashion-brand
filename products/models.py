@@ -1,9 +1,11 @@
 from django.db import models
+from django.contrib.postgres.search import SearchVectorField
+from django.contrib.postgres.indexes import GinIndex
 
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, max_length=255)
     description = models.TextField(blank=True)
 
     def __str__(self):
@@ -12,7 +14,6 @@ class Category(models.Model):
 
 class Brand(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(unique=True)
 
     def __str__(self):
         return self.name
@@ -42,7 +43,7 @@ class Product(models.Model):
 
     name = models.CharField(max_length=255)
 
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, max_length=255)
 
     description = models.TextField(blank=True)
 
@@ -63,11 +64,36 @@ class Product(models.Model):
         default="U"
     )
 
+    sku = models.CharField(
+        max_length=150,
+        unique=True,
+        db_index=True,
+        help_text="Unique Stock Keeping Unit for this product."
+    )
+
+    search_tags = models.TextField(
+        blank=True,
+        db_index=True,
+        help_text="Comma-separated keywords for improving search."
+    )
+
+    search_vector = SearchVectorField(
+        null=True,
+        blank=True,
+        editable=False,
+        db_index=True,
+    )
+
     is_active = models.BooleanField(default=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        indexes = [
+            GinIndex(fields=["search_vector"]),
+        ]
 
     def __str__(self):
         return self.name
