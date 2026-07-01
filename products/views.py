@@ -3,40 +3,35 @@ from django.db.models import F
 from .models import Product
 from django.contrib.postgres.search import SearchQuery, SearchRank
 from django.contrib.postgres.search import TrigramSimilarity
+from products.services.search import ProductSearchService
+
 
 
 class ProductSearchView(ListView):
+
     model = Product
+
     template_name = "search_results.html"
+
     context_object_name = "products"
+
     paginate_by = 12
 
     def get_queryset(self):
+
         query = self.request.GET.get("q", "").strip()
 
         if not query:
             return Product.objects.none()
 
-        search_query = SearchQuery(query, search_type="websearch")
-
-        qs = (
-            Product.objects.filter(is_active=True)
-            .annotate(
-                rank=SearchRank(F("search_vector"), search_query),
-                similarity=TrigramSimilarity("name", query),
-            )
-            .annotate(
-                score=F("rank") + F("similarity")
-            )
-            .filter(score__gt=0)
-            .order_by("-score")
-        )
-
-        return qs
+        return ProductSearchService.search(query)
 
     def get_context_data(self, **kwargs):
+
         context = super().get_context_data(**kwargs)
+
         context["query"] = self.request.GET.get("q", "")
+
         return context
     
 
