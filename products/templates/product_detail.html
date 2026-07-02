@@ -1,119 +1,281 @@
-{% extends "search_results_layout.html" %}
+{% extends "base.html" %}
 {% load static %}
 
+{% block title %}
+{{ product.name }}
+{% endblock %}
+
 {% block extra_css %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/product_detail.css' %}">
+<link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
 {% endblock %}
 
 {% block content %}
 
-<div class="product-page">
+<section class="product-page">
 
-    <div class="breadcrumb">
+<div class="container">
 
-        <a href="{% url 'home' %}">
-            Home
-        </a>
+<nav class="breadcrumb">
 
-        /
+<a href="{% url 'home' %}">Home</a>
 
-        <span>
+<span>/</span>
 
-            {{ product.category.name }}
+<a href="#">{{ product.category.name }}</a>
 
-        </span>
+<span>/</span>
 
-        /
+<span>{{ product.name }}</span>
 
-        <span>
+</nav>
 
-            {{ product.name }}
+<div class="product-main">
 
-        </span>
+<div class="product-gallery">
 
-    </div>
+<div class="product-image">
 
+{% if product.image %}
 
-    <div class="product-main">
+<img
+src="{{ product.image.url }}"
+alt="{{ product.name }}"
+>
 
-        <div class="product-image">
+{% else %}
 
-            {% if product.image %}
+<div class="image-placeholder">
 
-                <img
-                    src="{{ product.image.url }}"
-                    alt="{{ product.name }}"
-                >
-
-            {% else %}
-
-                <div class="image-placeholder">
-
-                    No Image Available
-
-                </div>
-
-            {% endif %}
-
-        </div>
-
-
-        <div class="product-details">
-
-            {% if product.brand %}
-
-                <p class="brand">
-
-                    {{ product.brand.name }}
-
-                </p>
-
-            {% endif %}
-
-            <h1>
-
-                {{ product.name }}
-
-            </h1>
-
-            <p class="category">
-
-                {{ product.category.name }}
-
-            </p>
-
-            <p class="price">
-
-                ₹{{ product.base_price }}
-
-            </p>
-
-            <p class="gender">
-
-                {{ product.get_gender_display }}
-
-            </p>
-
-            {% if product.description %}
-
-                <div class="description">
-
-                    <h3>Description</h3>
-
-                    <p>
-
-                        {{ product.description }}
-
-                    </p>
-
-                </div>
-
-            {% endif %}
-
-        </div>
-
-    </div>
+No Image Available
 
 </div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+<div class="product-info">
+
+{% if product.brand %}
+
+<p class="product-brand">
+
+{{ product.brand.name }}
+
+</p>
+
+{% endif %}
+
+<h1 class="product-title">
+
+{{ product.name }}
+
+</h1>
+
+<div class="product-rating">
+
+★★★★★
+
+<span>(124 Reviews)</span>
+
+</div>
+
+<div class="product-price">
+
+₹{{ product.base_price }}
+
+</div>
+
+<p class="price-note">
+
+Inclusive of all taxes
+
+</p>
+
+<div class="product-meta">
+
+<div>
+
+<strong>Category</strong>
+
+<span>{{ product.category.name }}</span>
+
+</div>
+
+<div>
+
+<strong>Gender</strong>
+
+<span>{{ product.get_gender_display }}</span>
+
+</div>
+
+</div>
+
+<div class="size-section">
+
+<h3>Select Size</h3>
+
+<div class="size-options">
+
+<button>S</button>
+
+<button>M</button>
+
+<button>L</button>
+
+<button>XL</button>
+
+</div>
+
+</div>
+
+<div class="quantity-section">
+
+<h3>Quantity</h3>
+
+<div class="quantity-selector">
+
+<button>-</button>
+
+<input
+type="number"
+value="1"
+min="1"
+>
+
+<button>+</button>
+
+</div>
+
+</div>
+
+<div class="product-actions">
+
+<button class="btn-primary">
+
+Add to Cart
+
+</button>
+
+<button class="btn-secondary">
+
+Buy Now
+
+</button>
+
+<button class="wishlist-btn">
+
+<i class="fa-regular fa-heart"></i>
+
+Wishlist
+
+</button>
+
+</div>
+
+<div class="delivery-info">
+
+<div>
+
+<i class="fa-solid fa-truck-fast"></i>
+
+<span>Free Shipping</span>
+
+</div>
+
+<div>
+
+<i class="fa-solid fa-arrow-rotate-left"></i>
+
+<span>30-Day Returns</span>
+
+</div>
+
+<div>
+
+<i class="fa-solid fa-shield-halved"></i>
+
+<span>Secure Checkout</span>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<section class="product-description">
+
+<h2>
+
+Description
+
+</h2>
+
+{% if product.description %}
+
+<p>
+
+{{ product.description }}
+
+</p>
+
+{% else %}
+
+<p>
+
+No description available for this product.
+
+</p>
+
+{% endif %}
+
+</section>
+
+<section class="related-products">
+
+<div class="section-heading">
+
+<div>
+
+<p class="section-subtitle">
+
+YOU MAY ALSO LIKE
+
+</p>
+
+<h2>
+
+Related Products
+
+</h2>
+
+</div>
+
+<a href="#">
+
+View More
+
+</a>
+
+</div>
+
+<div class="product-grid">
+
+{% comment %}
+Reuse your existing product card component here once related products are implemented.
+{% endcomment %}
+
+</div>
+
+</section>
+
+</div>
+
+</section>
 
 {% endblock %}
