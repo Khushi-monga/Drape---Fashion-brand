@@ -1,199 +1,310 @@
-{% extends "search_results_layout.html" %}
+{% extends "base.html" %}
+{% load static %}
 
-{% block navbar %}
-
-<!-- Logo -->
-<a href="/" class="flex items-center gap-2">
-    <span class="logo-text">DRAPE</span>
-    <span class="logo-dot">.</span>
-</a>
-
-<!-- Search -->
-<form method="GET" class="search-form">
-    <div class="search-wrapper">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input
-            type="text"
-            name="q"
-            value="{{ query }}"
-            placeholder="Search products, brands, categories..."
-            class="search-input"
-        >
-        <button type="submit" class="search-btn">
-            Search
-        </button>
-    </div>
-</form>
-
-<!-- Icons -->
-<div class="flex items-center icon-group">
-    <button class="icon-btn">
-        <i class="fa-regular fa-heart"></i>
-    </button>
-    <button class="icon-btn">
-        <i class="fa-solid fa-bag-shopping"></i>
-    </button>
-    <button class="icon-btn">
-        <i class="fa-regular fa-user"></i>
-    </button>
-</div>
-
+{% block title %}
+Search Results
 {% endblock %}
 
-
-{% block hero %}
-
-<div class="hero">
-    <p class="hero-kicker">Search Results</p>
-    <h1 class="hero-title mt-3">{{ query }}</h1>
-    <p class="hero-subtitle mt-4">{{ paginator.count }} curated pieces waiting to be explored.</p>
-</div>
-
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/search_results.css' %}">
 {% endblock %}
 
+{% block content %}
 
-{% block filter_chips %}
+<section class="search-page">
 
-<div class="flex gap-3 overflow-x-auto pb-2">
-    <button class="chip chip-active">All</button>
-    <button class="chip">Men</button>
-    <button class="chip">Women</button>
-    <button class="chip">Shoes</button>
-    <button class="chip">Accessories</button>
-    <button class="chip">Luxury</button>
-    <button class="chip">Trending</button>
-    <button class="chip">New</button>
-</div>
+    <div class="container">
 
-{% endblock %}
+        <!-- Search Header -->
 
+        <div class="search-header">
 
-{% block sidebar %}
+            <div>
+                <p class="search-kicker">
+                    Search Results
+                </p>
 
-<div class="filter-panel">
-    <h2 class="sidebar-title">Filters</h2>
+                <h1 class="search-title">
+                    "{{ query }}"
+                </h1>
 
-    <div class="filter-group">
-        <h3>Categories</h3>
-        <label><input type="checkbox"> Men</label>
-        <label><input type="checkbox"> Women</label>
-        <label><input type="checkbox"> Kids</label>
-        <label><input type="checkbox"> Accessories</label>
-    </div>
+                <p class="search-subtitle">
+                    {{ paginator.count }} products found
+                </p>
+            </div>
 
-    <div class="filter-group">
-        <h3>Price</h3>
-        <label><input type="radio"> Under ₹1000</label>
-        <label><input type="radio"> ₹1000-3000</label>
-        <label><input type="radio"> ₹3000-6000</label>
-        <label><input type="radio"> Premium</label>
-    </div>
-
-    <div class="filter-group">
-        <h3>Brand</h3>
-        <label><input type="checkbox"> Nike</label>
-        <label><input type="checkbox"> Adidas</label>
-        <label><input type="checkbox"> Zara</label>
-        <label><input type="checkbox"> H&M</label>
-        <label><input type="checkbox"> Puma</label>
-    </div>
-</div>
-
-{% endblock %}
-
-
-{% block results_header %}
-
-<div class="flex justify-between items-center">
-    <div>
-        <h2 class="section-title">{{ paginator.count }} Products</h2>
-        <p class="section-subtitle">Showing the best matches</p>
-    </div>
-    <select class="rounded-xl px-4 py-3">
-        <option>Relevance</option>
-        <option>Price ↑</option>
-        <option>Price ↓</option>
-        <option>Newest</option>
-    </select>
-</div>
-
-{% endblock %}
-
-
-{% block products %}
-
-<div class="product-grid">
-{% for product in products %}
-
-<a href="{% url 'product_detail' product.slug %}" class="product-card">
-
-    <div class="product-image-wrapper">
-        {% if product.image %}
-        <img
-            src="{{ product.image.url }}"
-            alt="{{ product.name }}"
-            class="product-image"
-        >
-        {% else %}
-        <div class="product-placeholder">
-            No Image
         </div>
-        {% endif %}
 
-        <span class="product-badge">NEW</span>
+        <!-- Category Chips -->
 
-        <button class="wishlist-btn">
-            <i class="fa-regular fa-heart"></i>
-        </button>
-    </div>
+        <div class="search-chips">
 
-    <div class="product-content">
-        <p class="product-brand">{{ product.brand.name }}</p>
-        <h3 class="product-title">{{ product.name }}</h3>
-        <p class="product-category">{{ product.category.name }}</p>
+            <button class="chip active">All</button>
+            <button class="chip">Men</button>
+            <button class="chip">Women</button>
+            <button class="chip">Shoes</button>
+            <button class="chip">Accessories</button>
+            <button class="chip">Luxury</button>
+            <button class="chip">Trending</button>
+            <button class="chip">New</button>
 
-        <div class="product-footer">
-            <span class="price">₹{{ product.base_price }}</span>
-            <span class="shipping">Free Shipping</span>
         </div>
+
+        <div class="search-layout">
+
+            <!-- Sidebar -->
+
+            <aside class="filters">
+
+                <div class="filter-card">
+
+                    <h2>Filters</h2>
+
+                    <div class="filter-group">
+
+                        <h3>Category</h3>
+
+                        <label><input type="checkbox"> Men</label>
+                        <label><input type="checkbox"> Women</label>
+                        <label><input type="checkbox"> Kids</label>
+                        <label><input type="checkbox"> Accessories</label>
+
+                    </div>
+
+                    <div class="filter-group">
+
+                        <h3>Price</h3>
+
+                        <label><input type="radio" name="price"> Under ₹1000</label>
+                        <label><input type="radio" name="price"> ₹1000 – ₹3000</label>
+                        <label><input type="radio" name="price"> ₹3000 – ₹6000</label>
+                        <label><input type="radio" name="price"> Premium</label>
+
+                    </div>
+
+                    <div class="filter-group">
+
+                        <h3>Brand</h3>
+
+                        <label><input type="checkbox"> Nike</label>
+                        <label><input type="checkbox"> Adidas</label>
+                        <label><input type="checkbox"> Zara</label>
+                        <label><input type="checkbox"> H&M</label>
+                        <label><input type="checkbox"> Puma</label>
+
+                    </div>
+
+                </div>
+
+                <div class="filter-actions">
+                    <button type="submit" class="apply-filters-btn">
+                        Apply Filters
+                    </button>
+
+                    <a href="{% url 'product_search' %}?q={{ query }}" class="clear-filters-btn">
+                        Clear All
+                    </a>
+                </div>
+
+            </aside>
+
+            <!-- Results -->
+
+            <section class="results">
+
+                <div class="results-header">
+
+                    <div>
+
+                        <h2>
+                            {{ paginator.count }} Products
+                        </h2>
+
+                        <p>
+                            Showing the best matches
+                        </p>
+
+                    </div>
+
+                    <select class="sort-select">
+
+                        <option>Relevance</option>
+                        <option>Newest</option>
+                        <option>Price: Low → High</option>
+                        <option>Price: High → Low</option>
+
+                    </select>
+
+                </div>
+
+                <div class="product-grid">
+
+                    {% for product in products %}
+
+                    <a
+                        href="{% url 'product_detail' product.slug %}"
+                        class="product-card"
+                    >
+
+                        <div class="product-image-wrapper">
+
+                            {% if product.image %}
+
+                            <img
+                                src="{{ product.image.url }}"
+                                alt="{{ product.name }}"
+                                class="product-image"
+                            >
+
+                            {% else %}
+
+                            <div class="product-placeholder">
+                                No Image
+                            </div>
+
+                            {% endif %}
+
+                            <span class="product-badge">
+                                NEW
+                            </span>
+
+                            <button class="wishlist-btn">
+
+                                <i class="fa-regular fa-heart"></i>
+
+                            </button>
+
+                        </div>
+
+                        <div class="product-content">
+
+                            <p class="product-brand">
+
+                                {{ product.brand.name }}
+
+                            </p>
+
+                            <h3 class="product-title">
+
+                                {{ product.name }}
+
+                            </h3>
+
+                            <p class="product-category">
+
+                                {{ product.category.name }}
+
+                            </p>
+
+                            <div class="product-footer">
+
+                                <span class="price">
+
+                                    ₹{{ product.base_price }}
+
+                                </span>
+
+                                <span class="shipping">
+
+                                    Free Shipping
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                    {% empty %}
+
+                    <div class="empty-state">
+
+                        <i class="fa-solid fa-box-open"></i>
+
+                        <h2>
+
+                            Nothing Found
+
+                        </h2>
+
+                        <p>
+
+                            Try another search term.
+
+                        </p>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+                {% if paginator.num_pages > 1 %}
+
+                <div class="pagination">
+
+                    {% if page_obj.has_previous %}
+
+                    <a
+                        href="?q={{ query }}&page={{ page_obj.previous_page_number }}"
+                        class="page-btn"
+                    >
+
+                        ←
+
+                    </a>
+
+                    {% endif %}
+
+                    {% for num in paginator.page_range %}
+
+                        {% if page_obj.number == num %}
+
+                        <span class="page-btn active">
+
+                            {{ num }}
+
+                        </span>
+
+                        {% else %}
+
+                        <a
+                            href="?q={{ query }}&page={{ num }}"
+                            class="page-btn"
+                        >
+
+                            {{ num }}
+
+                        </a>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+
+                    <a
+                        href="?q={{ query }}&page={{ page_obj.next_page_number }}"
+                        class="page-btn"
+                    >
+
+                        →
+
+                    </a>
+
+                    {% endif %}
+
+                </div>
+
+                {% endif %}
+
+            </section>
+
+        </div>
+
     </div>
 
-</a>
-
-{% empty %}
-
-<div class="col-span-full empty-state">
-    <i class="fa-solid fa-box-open text-5xl" style="color: var(--border-dark);"></i>
-    <h2>Nothing found</h2>
-    <p>Try another search term.</p>
-</div>
-
-{% endfor %}
-</div>
-
-{% endblock %}
-
-
-{% block pagination %}
-
-<div class="pagination">
-
-    {% if page_obj.has_previous %}
-    <a href="?q={{ query }}&page={{ page_obj.previous_page_number }}" class="page-btn">←</a>
-    {% endif %}
-
-    {% for num in paginator.page_range %}
-        {% if page_obj.number == num %}
-        <span class="page-btn active">{{ num }}</span>
-        {% else %}
-        <a href="?q={{ query }}&page={{ num }}" class="page-btn">{{ num }}</a>
-        {% endif %}
-    {% endfor %}
-
-    {% if page_obj.has_next %}
-    <a href="?q={{ query }}&page={{ page_obj.next_page_number }}" class="page-btn">→</a>
-    {% endif %}
-
-</div>
+</section>
 
 {% endblock %}

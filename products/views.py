@@ -4,6 +4,7 @@ from .models import Product
 from django.contrib.postgres.search import SearchQuery, SearchRank
 from django.contrib.postgres.search import TrigramSimilarity
 from products.services.search import ProductSearchService
+from .models import Product, Category, Brand
 
 
 
