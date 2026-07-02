@@ -1,174 +1,71 @@
 {% load static %}
+
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>{% block title %}Maison — Fashion That Feels Like You{% endblock %}</title>
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
 
-  <!-- Your CSS -->
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  {% block extra_head %}{% endblock %}
+    <title>
+
+        {% block title %}
+            Marketplace
+        {% endblock %}
+
+    </title>
+
+    <!-- Tailwind -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <!-- Global CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base.css' %}"
+    >
+
+    <!-- Page Specific CSS -->
+
+    {% block extra_css %}
+    {% endblock %}
 
 </head>
 
-<body>
+<body class="bg-stone-50 text-neutral-900 antialiased">
 
-  <!-- ── Ticker strip ──────────────────────────────── -->
-  <div class="ticker-strip" aria-hidden="true">
-    <div class="ticker-track">
-      <span>New arrivals every Friday</span>
-      <span class="dot">✦</span>
-      <span>Free shipping on orders above ₹999</span>
-      <span class="dot">✦</span>
-      <span>Clothes that actually fit</span>
-      <span class="dot">✦</span>
-      <span>Easy 15-day returns</span>
-      <span class="dot">✦</span>
-      <span>Wear it your way</span>
-      <span class="dot">✦</span>
-      <span>Summer edit is live now</span>
-      <span class="dot">✦</span>
-      <!-- Duplicate for seamless loop -->
-      <span>New arrivals every Friday</span>
-      <span class="dot">✦</span>
-      <span>Free shipping on orders above ₹999</span>
-      <span class="dot">✦</span>
-      <span>Clothes that actually fit</span>
-      <span class="dot">✦</span>
-      <span>Easy 15-day returns</span>
-      <span class="dot">✦</span>
-      <span>Wear it your way</span>
-      <span class="dot">✦</span>
-      <span>Summer edit is live now</span>
-      <span class="dot">✦</span>
-    </div>
-  </div>
+    <!-- =========================
+         PAGE
+    ========================== -->
 
-  <!-- ── Navbar ─────────────────────────────────────── -->
-  <header class="navbar">
-    <div class="navbar-inner">
+    {% block content %}
+    {% endblock %}
 
-      <nav class="nav-left" aria-label="Main categories">
-        <a href="/products/clothing/">Clothing</a>
-        <a href="/products/footwear/">Footwear</a>
-        <a href="/products/accessories/">Accessories</a>
-        <a href="/products/?sale=true">Sale</a>
-      </nav>
+    <!-- =========================
+         GLOBAL JS
+    ========================== -->
 
-      <button class="nav-toggle" aria-label="Open menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+    <script src="{% static 'js/base.js' %}"></script>
 
-      <div class="nav-logo">
-        <a href="/">Ma<em>i</em>son</a>
-      </div>
+    <!-- Page Specific JS -->
 
-      <nav class="nav-right" aria-label="Account and cart">
-        <a href="/accounts/login/">Login</a>
-        <a href="/accounts/register/">Register</a>
-        <a href="/cart/" class="cart-btn">
-          Bag
-          <span class="cart-count" aria-label="0 items in cart">0</span>
-        </a>
-      </nav>
-
-    </div>
-  </header>
-
-  <!-- ── Flash messages ────────────────────────────── -->
-  {% if messages %}
-    <div class="messages" role="alert">
-      {% for message in messages %}
-        <div class="message {{ message.tags }}">{{ message }}</div>
-      {% endfor %}
-    </div>
-  {% endif %}
-
-  <!-- ── Page content ──────────────────────────────── -->
-  <main>
-    {% block content %}{% endblock %}
-  </main>
-
-  <!-- ── Newsletter strip ──────────────────────────── -->
-  <section class="newsletter-strip">
-    <h3>Good things, straight to you.</h3>
-    <p>New drops, sale alerts, and the occasional styling idea — no clutter.</p>
-    <div class="newsletter-form">
-      <input type="email" placeholder="your@email.com" aria-label="Email address">
-      <button type="submit">Subscribe</button>
-    </div>
-  </section>
-
-  <!-- ── Footer ────────────────────────────────────── -->
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-top">
-
-        <div class="footer-brand">
-          <div class="logo-text">Ma<em>i</em>son</div>
-          <p>Curated fashion for people who know what they like — and love discovering what they didn't know they needed.</p>
-          <div class="social-links">
-            <a href="#">Instagram</a>
-            <a href="#">Pinterest</a>
-            <a href="#">WhatsApp</a>
-          </div>
-        </div>
-
-        <div class="footer-col">
-          <h4>Shop</h4>
-          <ul>
-            <li><a href="/products/clothing/">Clothing</a></li>
-            <li><a href="/products/footwear/">Footwear</a></li>
-            <li><a href="/products/accessories/">Accessories</a></li>
-            <li><a href="/products/?sale=true">Sale</a></li>
-            <li><a href="/products/?new=true">New Arrivals</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Help</h4>
-          <ul>
-            <li><a href="/sizing-guide/">Sizing Guide</a></li>
-            <li><a href="/shipping/">Shipping Info</a></li>
-            <li><a href="/returns/">Returns & Exchanges</a></li>
-            <li><a href="/faq/">FAQ</a></li>
-            <li><a href="/contact/">Contact Us</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>About</h4>
-          <ul>
-            <li><a href="/about/">Our Story</a></li>
-            <li><a href="/sustainability/">Sustainability</a></li>
-            <li><a href="/careers/">Careers</a></li>
-            <li><a href="/press/">Press</a></li>
-          </ul>
-        </div>
-
-      </div>
-
-      <div class="footer-bottom">
-        <p>© 2026 Maison. Made with care in India.</p>
-        <div class="footer-bottom-links">
-          <a href="/privacy/">Privacy Policy</a>
-          <a href="/terms/">Terms of Use</a>
-          <a href="/cookies/">Cookies</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  {% block extra_scripts %}{% endblock %}
+    {% block extra_js %}
+    {% endblock %}
 
 </body>
+
 </html>
