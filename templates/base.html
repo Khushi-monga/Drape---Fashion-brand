@@ -1,71 +1,322 @@
 {% load static %}
 
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
-
         {% block title %}
-            Marketplace
+            Drape
         {% endblock %}
-
     </title>
 
-    <!-- Tailwind -->
-
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
 
     <!-- Font Awesome -->
-
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     >
 
     <!-- Global CSS -->
-
     <link
         rel="stylesheet"
         href="{% static 'css/base.css' %}"
     >
 
-    <!-- Page Specific CSS -->
-
-    {% block extra_css %}
-    {% endblock %}
-
+    {% block extra_css %}{% endblock %}
 </head>
 
-<body class="bg-stone-50 text-neutral-900 antialiased">
+<body>
 
-    <!-- =========================
-         PAGE
-    ========================== -->
+    <!-- ================= NAVBAR ================= -->
+
+    <div class="header-gradient">
+
+    <!-- ================= PRIMARY NAV ================= -->
+
+    <header>
+
+        <nav>
+
+            <a href="{% url 'home' %}" class="logo">
+                DRAPE<span>.</span>
+            </a>
+
+            <form
+                action="{% url 'product_search' %}"
+                method="GET"
+                class="search-form"
+            >
+
+                <div class="search-wrapper">
+
+                    <input
+                        type="text"
+                        name="q"
+                        value="{{ request.GET.q }}"
+                        placeholder="Search for products..."
+                        class="search-input"
+                    >
+
+                    <button
+                        type="submit"
+                        class="search-button"
+                    >
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+
+                </div>
+
+            </form>
+
+            <div class="nav-icons">
+
+                <a href="#" class="icon-btn">
+                    <i class="fa-regular fa-heart"></i>
+                </a>
+
+                <a href="#" class="icon-btn">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </a>
+
+                <div class="profile-dropdown">
+
+                    {% if request.user.is_authenticated %}
+
+                        <button class="icon-btn profile-btn">
+                            <i class="fa-regular fa-user"></i>
+                        </button>
+
+                        <div class="dropdown-menu">
+
+                            <div class="dropdown-header">
+                                <p>Hello,</p>
+                                <strong>{{ request.user.first_name|default:request.user.username }}</strong>
+                            </div>
+
+                            <hr>
+
+                            <a href="#">
+                                My Profile
+                            </a>
+
+                            <a href="#">
+                                My Orders
+                            </a>
+
+                            <a href="#">
+                                Wishlist
+                            </a>
+
+                            <a href="#">
+                                Cart
+                            </a>
+
+                            <hr>
+
+                            <a href="{% url 'logout' %}">
+                                Logout
+                            </a>
+
+                        </div>
+
+                    {% else %}
+
+                        <a
+                            href="{% url 'login' %}"
+                            class="icon-btn profile-btn"
+                        >
+                            <i class="fa-regular fa-user"></i>
+                        </a>
+
+                        <div class="login-tooltip">
+                            Login
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+    <!-- ================= CATEGORY NAV ================= -->
+
+    <div class="category-nav">
+
+        <div class="container">
+
+            <a href="#">Women</a>
+
+            <a href="#">Men</a>
+
+            <a href="#">Kids</a>
+
+            <a href="#">Shoes</a>
+
+            <a href="#">Accessories</a>
+
+            <a href="#">Luxury</a>
+
+            <a href="#">New Arrivals</a>
+
+            <a href="#">Sale</a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<main>
 
     {% block content %}
     {% endblock %}
 
-    <!-- =========================
-         GLOBAL JS
-    ========================== -->
+</main>
 
-    <script src="{% static 'js/base.js' %}"></script>
+    <!-- ================= FOOTER ================= -->
 
-    <!-- Page Specific JS -->
+    <footer>
+
+        <div class="footer-grid">
+
+            <div>
+
+                <p class="footer-brand-name">
+                    DRAPE
+                </p>
+
+                <p class="footer-tagline">
+                    Thoughtfully made clothes for everyday life.
+                    Quality you can feel, at prices that respect you.
+                </p>
+
+                <div class="footer-socials">
+
+                    <a
+                        href="#"
+                        class="footer-social"
+                        aria-label="Instagram"
+                    >
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="2" y="2" width="20" height="20" rx="5"/>
+                            <circle cx="12" cy="12" r="5"/>
+                            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+                        </svg>
+                    </a>
+
+                    <a
+                        href="#"
+                        class="footer-social"
+                        aria-label="Pinterest"
+                    >
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 2C6.477 2 2 6.477 2 12c0 4.236 2.636 7.855 6.356 9.312-.088-.791-.167-2.005.035-2.868.181-.78 1.172-4.97 1.172-4.97s-.299-.598-.299-1.482c0-1.388.806-2.428 1.808-2.428.852 0 1.265.64 1.265 1.408 0 .858-.546 2.14-.828 3.33-.236.995.499 1.806 1.476 1.806 1.771 0 3.135-1.867 3.135-4.563 0-2.386-1.715-4.053-4.163-4.053-2.836 0-4.498 2.127-4.498 4.326 0 .856.33 1.775.741 2.277a.3.3 0 0 1 .069.285c-.076.31-.243.994-.277 1.134-.044.183-.146.222-.337.134C5.99 16.52 5 14.67 5 12.553 5 9.293 7.418 6.29 11.64 6.29c3.426 0 6.09 2.44 6.09 5.702 0 3.403-2.145 6.141-5.122 6.141-1.001 0-1.941-.52-2.264-1.134l-.615 2.296c-.223.858-.823 1.932-1.226 2.586.924.286 1.902.44 2.917.44C17.523 22 22 17.523 22 12S17.523 2 12 2z"/>
+                        </svg>
+                    </a>
+
+                    <a
+                        href="#"
+                        class="footer-social"
+                        aria-label="Twitter"
+                    >
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M4 4L20 20M4 20L20 4"/>
+                        </svg>
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div>
+
+                <p class="footer-col-title">
+                    Shop
+                </p>
+
+                <ul class="footer-links">
+                    <li><a href="#">New Arrivals</a></li>
+                    <li><a href="#">Women</a></li>
+                    <li><a href="#">Men</a></li>
+                    <li><a href="#">Kids</a></li>
+                    <li><a href="#">Accessories</a></li>
+                    <li><a href="#">Sale</a></li>
+                </ul>
+
+            </div>
+
+            <div>
+
+                <p class="footer-col-title">
+                    Help
+                </p>
+
+                <ul class="footer-links">
+                    <li><a href="#">Size Guide</a></li>
+                    <li><a href="#">Track Order</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Shipping Info</a></li>
+                    <li><a href="#">FAQs</a></li>
+                </ul>
+
+            </div>
+
+            <div>
+
+                <p class="footer-col-title">
+                    Company
+                </p>
+
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Sustainability</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2025 Drape. All rights reserved.
+            </p>
+
+            <div class="flex" style="gap: 1.5rem;">
+
+                <a href="#">
+                    Privacy Policy
+                </a>
+
+                <a href="#">
+                    Terms of Use
+                </a>
+
+            </div>
+
+        </div>
+
+    </footer>
 
     {% block extra_js %}
     {% endblock %}
 
 </body>
-
 </html>
