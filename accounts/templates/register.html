@@ -1,103 +1,148 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Account — Drape</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+{% block title %}Create Account | DRAPE{% endblock %}
 
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
 
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-</head>
-<body>
+{% block content %}
 
 <section class="auth-page">
+<div class="container">
+<div class="auth-wrapper">
 
-    <div class="auth-left">
+<div class="auth-left">
+<p class="auth-eyebrow">JOIN DRAPE</p>
+<h1>Create your <span>account</span></h1>
+<p class="auth-text">Discover thousands of products from trusted brands, build your wishlist, enjoy faster checkout and receive exclusive member-only offers.</p>
 
-        <p class="auth-eyebrow">
-            New Here
-        </p>
+<div class="auth-features">
+<div class="feature-item">
+<div class="feature-icon"><i class="fa-solid fa-gift"></i></div>
+<div>
+<h4>Exclusive Offers</h4>
+<p>Unlock member-only discounts and early access.</p>
+</div>
+</div>
 
-        <h1 class="auth-title">
-            Create your<br>
-            <em>Drape.</em> account
-        </h1>
+<div class="feature-item">
+<div class="feature-icon"><i class="fa-regular fa-heart"></i></div>
+<div>
+<h4>Wishlist</h4>
+<p>Save products across all your devices.</p>
+</div>
+</div>
 
-        <p class="auth-copy">
-            Discover curated collections, premium essentials,
-            and a shopping experience designed around timeless style.
-        </p>
+<div class="feature-item">
+<div class="feature-icon"><i class="fa-solid fa-bolt"></i></div>
+<div>
+<h4>Faster Checkout</h4>
+<p>Save addresses and checkout in seconds.</p>
+</div>
+</div>
+</div>
+</div>
 
-    </div>
+<div class="auth-card">
 
-    <div class="auth-card">
+<div class="auth-card-header">
+<h2>Create Account</h2>
+<p>Fill in your details to get started.</p>
+</div>
 
-        <h2 class="card-title">
-            Register
-        </h2>
+<form method="POST" class="auth-form">
 
-        {% if form.errors %}
-            <div class="error-box">
-                {% for field in form %}
-                    {% for error in field.errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
-                {% endfor %}
+{% csrf_token %}
 
-                {% for error in form.non_field_errors %}
-                    <p>{{ error }}</p>
-                {% endfor %}
-            </div>
-        {% endif %}
+{% if form.non_field_errors %}
+<div class="form-errors">
+{{ form.non_field_errors }}
+</div>
+{% endif %}
 
-        <form method="POST" action="{% url 'register' %}">
-            {% csrf_token %}
+<div class="form-row">
 
-            {{ form.as_p }}
+<div class="form-group">
+<label>First Name</label>
+{{ form.first_name }}
+{% if form.first_name.errors %}
+<small class="field-error">{{ form.first_name.errors.0 }}</small>
+{% endif %}
+</div>
 
-            <button type="submit" class="btn-primary">
-                Create Account
-            </button>
-        </form>
+<div class="form-group">
+<label>Last Name</label>
+{{ form.last_name }}
+{% if form.last_name.errors %}
+<small class="field-error">{{ form.last_name.errors.0 }}</small>
+{% endif %}
+</div>
 
-        <div class="divider">
-            <span>or</span>
-        </div>
+</div>
 
-        <a
-            href="{% url 'google_login' %}"
-            class="btn-google"
-        >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 48 48"
-                class="google-icon"
-                aria-hidden="true"
-            >
-                <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303C33.655 32.657 29.233 36 24 36c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.276 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
-                <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.276 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
-                <path fill="#4CAF50" d="M24 44c5.177 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.146 35.091 26.676 36 24 36c-5.212 0-9.621-3.329-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
-                <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-1.014 2.886-3.057 5.215-5.684 6.57l.003-.002 6.19 5.238C35.369 39.408 44 33 44 24c0-1.341-.138-2.65-.389-3.917z"/>
-            </svg>
+<div class="form-group">
+<label>Email</label>
+{{ form.email }}
+{% if form.email.errors %}
+<small class="field-error">{{ form.email.errors.0 }}</small>
+{% endif %}
+</div>
 
-            Sign up with Google
-        </a>
+<div class="form-group">
+<label>Username</label>
+{{ form.username }}
+{% if form.username.errors %}
+<small class="field-error">{{ form.username.errors.0 }}</small>
+{% endif %}
+</div>
 
-        <p class="auth-footer">
-            Already have an account?
-            <a href="{% url 'login' %}">
-                Login
-            </a>
-        </p>
+<div class="form-group">
+<label>Password</label>
+{{ form.password1 }}
+{% if form.password1.errors %}
+<small class="field-error">{{ form.password1.errors.0 }}</small>
+{% endif %}
+</div>
 
-    </div>
+<div class="form-group">
+<label>Confirm Password</label>
+{{ form.password2 }}
+{% if form.password2.errors %}
+<small class="field-error">{{ form.password2.errors.0 }}</small>
+{% endif %}
+</div>
 
+<label class="remember-me">
+<input type="checkbox" required>
+<span>I agree to the <a href="#">Terms</a> & <a href="#">Privacy Policy</a>.</span>
+</label>
+
+<button type="submit" class="auth-btn">
+Create Account
+</button>
+
+<div class="divider">
+<span>or continue with</span>
+</div>
+
+<a href="{% url 'google_login' %}" class="google-btn">
+<img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+<span>Continue with Google</span>
+</a>
+
+<p class="auth-footer">
+Already have an account?
+<a href="{% url 'login' %}">Sign In</a>
+</p>
+
+</form>
+
+</div>
+
+</div>
+</div>
 </section>
 
-</body>
-</html>
+{% endblock %}

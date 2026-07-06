@@ -1,0 +1,23 @@
+@import url("login.css");
+
+.form-row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:1rem;
+}
+
+.remember-me a{
+color:var(--burgundy);
+font-weight:600;
+text-decoration:none;
+}
+
+.remember-me a:hover{
+color:var(--primary);
+}
+
+@media(max-width:640px){
+.form-row{
+grid-template-columns:1fr;
+}
+}

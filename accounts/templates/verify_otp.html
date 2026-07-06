@@ -1,131 +1,82 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify Email — Drape</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+{% block title %}Verify Email | DRAPE{% endblock %}
 
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/verify_otp.css' %}">
+{% endblock %}
 
-    <link rel="stylesheet" href="{% static 'css/verify_otp.css' %}">
-</head>
-
-<body>
+{% block content %}
 
 <section class="auth-page">
+<div class="container">
+<div class="otp-card">
 
-    <div class="auth-left">
+<div class="otp-icon">
+<i class="fa-solid fa-envelope-open-text"></i>
+</div>
 
-        <p class="auth-eyebrow">
-            Almost There
-        </p>
+<p class="auth-eyebrow">EMAIL VERIFICATION</p>
 
-        <div class="hero-line"></div>
+<h1>Verify your email</h1>
 
-        <h1 class="auth-title">
-            Verify your<br>
-            <em class="brand-word">Email.</em>
-        </h1>
+<p class="otp-text">
+We've sent a 6-digit verification code to
+<strong>{{ email }}</strong>.
+Enter it below to activate your account.
+</p>
 
-        <p class="auth-copy">
-            We've sent a one-time verification code to your email address.
-            Enter it below to complete your account creation and begin your
-            journey with Drape.
-        </p>
+<form method="POST" class="auth-form">
 
-    </div>
+{% csrf_token %}
 
-    <div class="auth-card">
+{% if messages %}
+{% for message in messages %}
+<div class="form-errors">
+{{ message }}
+</div>
+{% endfor %}
+{% endif %}
 
-        <h2 class="card-title">
-            Verification
-        </h2>
+<div class="form-group">
+<label>Verification Code</label>
+<input
+type="text"
+name="otp"
+maxlength="6"
+placeholder="Enter 6-digit OTP"
+autocomplete="one-time-code"
+required>
+</div>
 
-        {% if error %}
-            <div class="error-box">
-                <p>{{ error }}</p>
-            </div>
-        {% endif %}
+<button type="submit" class="auth-btn">
+Verify Account
+</button>
 
-        {% if otp_resent %}
-            <div class="success-box">
-                <p>
-                    A new verification code has been sent to your email.
-                </p>
-            </div>
-        {% endif %}
+</form>
 
-        <form method="POST">
-            {% csrf_token %}
+<div class="otp-footer">
 
-            <div class="otp-group">
+<p>
+Didn't receive the code?
+</p>
 
-                <label for="otp">
-                    Verification Code
-                </label>
+<a href="{% url 'resend_otp' %}">
+Resend OTP
+</a>
 
-                <input
-                    type="text"
-                    name="otp"
-                    id="otp"
-                    maxlength="6"
-                    pattern="[0-9]{6}"
-                    inputmode="numeric"
-                    autocomplete="one-time-code"
-                    placeholder="123456"
-                    required
-                >
+</div>
 
-            </div>
+<p class="auth-footer">
+Wrong email?
+<a href="{% url 'register' %}">
+Go Back
+</a>
+</p>
 
-            <p class="otp-expiry">
-                This verification code expires in
-                <strong>10 minutes</strong>.
-            </p>
-
-            <button
-                type="submit"
-                class="btn-primary"
-            >
-                Verify OTP
-            </button>
-
-        </form>
-
-        <div class="divider"></div>
-
-        <p class="resend-text">
-            Didn't receive the code?
-        </p>
-
-        <form
-            method="POST"
-            action="{% url 'resend_otp' %}"
-        >
-            {% csrf_token %}
-
-            <button
-                type="submit"
-                class="btn-secondary"
-            >
-                Resend OTP
-            </button>
-        </form>
-
-        <p class="auth-footer">
-            Return to
-            <a href="{% url 'register' %}">
-                Registration
-            </a>
-        </p>
-
-    </div>
-
+</div>
+</div>
 </section>
 
-</body>
-</html>
+{% endblock %}
