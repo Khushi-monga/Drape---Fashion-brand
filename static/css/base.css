@@ -796,3 +796,35 @@ header{
     color: var(--accent);
 
 }
+
+.messages{
+    width:100%;
+    margin:20px 0;
+}
+
+.message{
+    padding:12px 18px;
+    margin-bottom:10px;
+    border-radius:8px;
+    font-weight:500;
+}
+
+.message.success{
+    background:#d1fae5;
+    color:#065f46;
+}
+
+.message.error{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.message.warning{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.message.info{
+    background:#dbeafe;
+    color:#1e40af;
+}

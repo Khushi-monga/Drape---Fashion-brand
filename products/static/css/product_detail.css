@@ -274,13 +274,24 @@ transition:var(--transition);
 }
 
 .btn-primary{
-background:var(--primary);
-border:none;
-color:#fff;
+width: 100%;
+height: 56px;
+
+background: var(--primary);
+color: white;
+
+border: none;
+border-radius: 12px;
+
+font-size: 1rem;
+font-weight: 600;
+
+cursor: pointer;
+transition: 0.2s ease;
 }
 
 .btn-primary:hover{
-background:var(--primary-light);
+background: var(--primary-dark);
 transform:translateY(-2px);
 box-shadow:var(--shadow);
 }

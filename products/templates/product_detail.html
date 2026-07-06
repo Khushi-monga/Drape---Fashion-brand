@@ -154,11 +154,22 @@ min="1"
 
 <div class="product-actions">
 
-<button class="btn-primary">
+    {% if is_in_cart %}
 
-Add to Cart
+    <a href="{% url 'cart:cart' %}" class="btn-secondary">
+        View Bag
+    </a>
 
-</button>
+    {% else %}
+
+    <form method="post" action="{% url 'cart:add' product.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn-primary">
+            Add to Bag
+        </button>
+    </form>
+
+    {% endif %}
 
 <button class="btn-secondary">
 

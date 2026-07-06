@@ -117,7 +117,7 @@
                                 Wishlist
                             </a>
 
-                            <a href="#">
+                            <a href="{% url 'cart:cart' %}">
                                 Cart
                             </a>
 
@@ -186,6 +186,16 @@
     {% endblock %}
 
 </main>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <!-- ================= FOOTER ================= -->
 

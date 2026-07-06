@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Cart
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="cart-container">
+
+    <h1 class="cart-title">Shopping Cart</h1>
+
+    {% if cart.items.exists %}
+
+    <div class="cart-layout">
+
+        <div class="cart-items">
+
+            {% for item in cart.items.all %}
+
+            <div class="cart-item">
+
+                <div class="cart-image">
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                </div>
+
+                <div class="cart-details">
+
+                    <h3>{{ item.product.name }}</h3>
+
+                    <p class="cart-price">
+                        ₹{{ item.unit_price }}
+                    </p>
+
+                    <form
+                        method="post"
+                        action="{% url 'cart:update' item.product.id %}"
+                        class="quantity-form"
+                    >
+                        {% csrf_token %}
+
+                        <input
+                            type="number"
+                            name="quantity"
+                            value="{{ item.quantity }}"
+                            min="1"
+                        >
+
+                        <button type="submit">
+                            Update
+                        </button>
+
+                    </form>
+
+                </div>
+
+                <div class="cart-actions">
+
+                    <div class="item-total">
+                        ₹{{ item.subtotal }}
+                    </div>
+
+                    <form
+                        method="post"
+                        action="{% url 'cart:remove' item.product.id %}"
+                    >
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="remove-btn"
+                        >
+                            Remove
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <aside class="cart-summary">
+
+            <h2>Order Summary</h2>
+
+            <div class="summary-row">
+                <span>Items</span>
+                <span>{{ cart.total_items }}</span>
+            </div>
+
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span>₹{{ cart.subtotal }}</span>
+            </div>
+
+            <div class="summary-row">
+                <span>Shipping</span>
+                <span>FREE</span>
+            </div>
+
+            <hr>
+
+            <div class="summary-total">
+                <span>Total</span>
+                <span>₹{{ cart.subtotal }}</span>
+            </div>
+
+            <a href="#" class="checkout-btn">
+                Proceed to Checkout
+            </a>
+
+            <form
+                method="post"
+                action="{% url 'cart:clear' %}"
+            >
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="clear-cart-btn"
+                >
+                    Clear Cart
+                </button>
+
+            </form>
+
+        </aside>
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-cart">
+
+        <img
+            src="{% static 'images/empty-cart.svg' %}"
+            alt="Empty Cart"
+        >
+
+        <h2>Your cart is empty</h2>
+
+        <p>
+            Looks like you haven't added anything yet.
+        </p>
+
+        <a
+            href="{% url 'home' %}"
+            class="continue-btn"
+        >
+            Continue Shopping
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
