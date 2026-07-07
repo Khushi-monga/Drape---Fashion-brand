@@ -44,6 +44,7 @@ Cart
                                 class="quantity-selector"
                                 data-product-id="{{ item.product.id }}"
                                 data-update-url="{% url 'cart:update_ajax' %}"
+                                data-product-name="{{ item.product.name }}"
                             >
 
                                 <button
@@ -85,12 +86,14 @@ Cart
                             <form
                                 method="post"
                                 action="{% url 'cart:remove' item.product.id %}"
+                                class="remove-form"
                             >
                                 {% csrf_token %}
 
                                 <button
-                                    type="submit"
-                                    class="remove-btn"
+                                    type="button"
+                                    class="remove-btn open-remove-modal"
+                                    data-product-name="{{ item.product.name }}"
                                 >
                                     Remove
                                 </button>
@@ -105,7 +108,7 @@ Cart
                 {% endfor %}
 
             </div>
-        </a>
+        
 
         <aside class="cart-summary">
 
@@ -181,6 +184,63 @@ Cart
     </div>
 
     {% endif %}
+
+</div>
+
+<div id="remove-modal" class="modal-overlay hidden">
+
+    <div class="remove-modal">
+
+        <button
+            type="button"
+            class="modal-close"
+            id="close-remove-modal"
+        >
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <h2>Remove from Bag?</h2>
+
+        <p class="modal-text">
+            Are you sure you want to remove
+            <strong id="modal-product-name"></strong>
+            from your bag?
+        </p>
+
+        <div class="wishlist-action">
+
+            <a
+                href=""
+                class="wishlist-btn-modal"
+            >
+                <i class="fa-regular fa-heart"></i>
+
+                Move to Wishlist
+            </a>
+
+        </div>
+
+        <div class="modal-actions">
+
+            <button
+                type="button"
+                class="btn-secondary"
+                id="cancel-remove"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                class="btn-primary"
+                id="confirm-remove"
+            >
+                Remove
+            </button>
+
+        </div>
+
+    </div>
 
 </div>
 

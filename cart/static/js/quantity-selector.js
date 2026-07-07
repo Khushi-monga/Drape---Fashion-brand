@@ -19,7 +19,7 @@ class QuantitySelector {
 
         this.syncDebounced = debounce(
             () => this.sync(),
-            2000
+            800
         );
 
         this.registerEvents();
@@ -63,7 +63,7 @@ class QuantitySelector {
 
     decrement() {
 
-        let value = Number(this.input.value);
+        const value = Number(this.input.value);
 
         if (value > 1) {
 
@@ -71,7 +71,18 @@ class QuantitySelector {
 
             this.syncDebounced();
 
+            return;
+
         }
+
+        const form = this.element
+            .closest(".cart-item")
+            .querySelector(".remove-form");
+
+        openRemoveModal(
+            form,
+            this.element.dataset.productName
+        );
 
     }
 
