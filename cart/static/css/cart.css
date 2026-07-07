@@ -2,6 +2,8 @@
    Cart Page
 ========================== */
 
+@import url("product_detail.css");
+
 .cart-container {
     max-width: 1280px;
     margin: 40px auto;

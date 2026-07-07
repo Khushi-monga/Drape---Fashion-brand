@@ -131,38 +131,52 @@ Inclusive of all taxes
 </div>
 
 </div>
+{% if is_in_cart %}
+    <div 
+        class="quantity-section"
+    >
 
-<div class="quantity-section">
+    <h3>Quantity</h3>
 
-<h3>Quantity</h3>
+    <div class="quantity-selector"
+        data-product-id="{{ product.id }}"
+        data-update-url="{% url 'cart:update_ajax' %}">
 
-<div class="quantity-selector">
+    <button
+        type="button"
+        class="qty-minus">-</button>
 
-<button>-</button>
+    <input
+    type="number"
+    class="qty-input"
+    value="{{ cart_quantity }}"
+    min="1"
+    >
 
-<input
-type="number"
-value="1"
-min="1"
->
+    <button
+        type="button"
+        class="qty-plus"
+    >
+            +
+    </button>
 
-<button>+</button>
-
-</div>
-
-</div>
+    </div>
+    </div>
+{% endif %}
 
 <div class="product-actions">
 
     {% if is_in_cart %}
 
-    <a href="{% url 'cart:cart' %}" class="btn-secondary">
-        View Bag
+    <a href="{% url 'cart:cart' %}">
+        <button class="btn-primary">
+            View Bag
+        </button>
     </a>
 
     {% else %}
-
-    <form method="post" action="{% url 'cart:add' product.id %}">
+    
+    <form id="add-to-cart-form" method="post" action="{% url 'cart:add' product.id %}">
         {% csrf_token %}
         <button type="submit" class="btn-primary">
             Add to Bag
@@ -289,4 +303,9 @@ Reuse your existing product card component here once related products are implem
 
 </section>
 
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/utils.js' %}"></script>
+<script src="{% static 'js/quantity-selector.js' %}"></script>
 {% endblock %}

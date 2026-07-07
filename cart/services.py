@@ -124,7 +124,7 @@ class CartService:
             cart_item.quantity = new_quantity
             cart_item.save(update_fields=["quantity", "updated_at"])
 
-        return cart_item
+        return cart, cart_item
 
     @staticmethod
     @transaction.atomic
@@ -147,7 +147,7 @@ class CartService:
         cart_item.quantity = quantity
         cart_item.save(update_fields=["quantity", "updated_at"])
 
-        return cart_item
+        return cart, cart_item
 
     @staticmethod
     @transaction.atomic

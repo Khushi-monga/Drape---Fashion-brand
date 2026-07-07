@@ -23,70 +23,89 @@ Cart
 
             {% for item in cart.items.all %}
 
-            <div class="cart-item">
+                <div class="cart-item">
 
-                <div class="cart-image">
-                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                        <div class="cart-image">
+                            <a href="{% url 'product_detail' item.product.slug %}">
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                            </a>
+                        </div>
+
+                        <div class="cart-details">
+                            <a href="{% url 'product_detail' item.product.slug %}">
+                                <h3>{{ item.product.name }}</h3>
+                            </a>
+
+                            <p class="cart-price">
+                                ₹{{ item.unit_price }}
+                            </p>
+
+                            <div
+                                class="quantity-selector"
+                                data-product-id="{{ item.product.id }}"
+                                data-update-url="{% url 'cart:update_ajax' %}"
+                            >
+
+                                <button
+                                    type="button"
+                                    class="qty-minus"
+                                >
+                                    −
+                                </button>
+
+                                <input
+                                    type="number"
+                                    class="qty-input"
+                                    value="{{ item.quantity }}"
+                                    min="1"
+                                >
+
+                                <button
+                                    type="button"
+                                    class="qty-plus"
+                                >
+                                    +
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div class="cart-actions">
+
+                            <div class="item-total">
+                                <p
+                                    class="cart-item-subtotal"
+                                    id="item-subtotal-{{ item.product.id }}"
+                                >
+                                    ₹{{ item.subtotal }}
+                                </p>
+                            </div>
+
+                            <form
+                                method="post"
+                                action="{% url 'cart:remove' item.product.id %}"
+                            >
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="remove-btn"
+                                >
+                                    Remove
+                                </button>
+
+                            </form>
+
+                        </div>
+                    
+
                 </div>
 
-                <div class="cart-details">
-
-                    <h3>{{ item.product.name }}</h3>
-
-                    <p class="cart-price">
-                        ₹{{ item.unit_price }}
-                    </p>
-
-                    <form
-                        method="post"
-                        action="{% url 'cart:update' item.product.id %}"
-                        class="quantity-form"
-                    >
-                        {% csrf_token %}
-
-                        <input
-                            type="number"
-                            name="quantity"
-                            value="{{ item.quantity }}"
-                            min="1"
-                        >
-
-                        <button type="submit">
-                            Update
-                        </button>
-
-                    </form>
-
-                </div>
-
-                <div class="cart-actions">
-
-                    <div class="item-total">
-                        ₹{{ item.subtotal }}
-                    </div>
-
-                    <form
-                        method="post"
-                        action="{% url 'cart:remove' item.product.id %}"
-                    >
-                        {% csrf_token %}
-
-                        <button
-                            type="submit"
-                            class="remove-btn"
-                        >
-                            Remove
-                        </button>
-
-                    </form>
-
-                </div>
+                {% endfor %}
 
             </div>
-
-            {% endfor %}
-
-        </div>
+        </a>
 
         <aside class="cart-summary">
 
@@ -99,7 +118,7 @@ Cart
 
             <div class="summary-row">
                 <span>Subtotal</span>
-                <span>₹{{ cart.subtotal }}</span>
+                <span id="cart-subtotal">₹{{ cart.subtotal }}</span>
             </div>
 
             <div class="summary-row">
@@ -111,7 +130,7 @@ Cart
 
             <div class="summary-total">
                 <span>Total</span>
-                <span>₹{{ cart.subtotal }}</span>
+                <span id="cart-total">₹{{ cart.subtotal }}</span>
             </div>
 
             <a href="#" class="checkout-btn">
@@ -165,4 +184,11 @@ Cart
 
 </div>
 
+{% endblock %}
+
+{% block extra_js %}
+
+<script src="{% static 'js/utils.js' %}"></script>
+<script src="{% static 'js/quantity-selector.js' %}"></script>
+<script src="{% static 'js/add_to_cart.js' %}"></script>
 {% endblock %}
