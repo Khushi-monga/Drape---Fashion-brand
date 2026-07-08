@@ -15,13 +15,13 @@ Cart
 
     <h1 class="cart-title">Shopping Cart</h1>
 
-    {% if cart.items.exists %}
+    {% if cart.total_items %}
 
     <div class="cart-layout">
 
         <div class="cart-items">
 
-            {% for item in cart.items.all %}
+            {% for item in cart.items %}
 
                 <div class="cart-item">
 

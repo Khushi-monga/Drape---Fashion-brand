@@ -1,7 +1,14 @@
 from django.shortcuts import redirect
 from accounts.services.jwt_utils import generate_tokens
+from cart.services.services import CartService
 
-def login_user_response(user):
+def login_user_response(request, user):
+
+    CartService.merge_guest_cart(
+        request=request,
+        user=user,
+    )
+
     access_token, refresh_token = generate_tokens(user)
 
     response = redirect("home")
@@ -21,7 +28,7 @@ def login_user_response(user):
         httponly=True,
         samesite="Lax",
         secure=True,
-        max_age=60*60*24*10,
+        max_age=60 * 60 * 24 * 10,
     )
 
     return response

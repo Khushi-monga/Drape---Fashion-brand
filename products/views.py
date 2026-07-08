@@ -6,6 +6,7 @@ from django.contrib.postgres.search import TrigramSimilarity
 from products.services.search import ProductSearchService
 from .models import Product, Category, Brand
 from cart.models import CartItem
+from cart.services.services import CartService
 
 
 
@@ -37,45 +38,48 @@ class ProductSearchView(ListView):
         return context
     
 
-
-
-from django.views.generic import DetailView
-
-from cart.models import CartItem
-from .models import Product
-
-
 class ProductDetailView(DetailView):
 
     model = Product
+
     template_name = "product_detail.html"
+
     context_object_name = "product"
+
     slug_field = "slug"
+
     slug_url_kwarg = "slug"
 
-    queryset = Product.objects.select_related(
-        "brand",
-        "category",
-    ).filter(
-        is_active=True
+    queryset = (
+        Product.objects
+        .select_related(
+            "brand",
+            "category",
+        )
+        .filter(
+            is_active=True
+        )
     )
 
     def get_context_data(self, **kwargs):
+
         context = super().get_context_data(**kwargs)
 
-        cart_item = None
-
-        if self.request.user.is_authenticated:
-            cart_item = (
-                CartItem.objects.select_related("cart")
-                .filter(
-                    cart__user=self.request.user,
-                    product=self.object,
-                )
-                .first()
-            )
+        cart_item = CartService.get_cart_item(
+            request=self.request,
+            product=self.object,
+        )
 
         context["is_in_cart"] = cart_item is not None
-        context["cart_quantity"] = cart_item.quantity if cart_item else 1
+
+        context["cart_quantity"] = (
+
+            cart_item.quantity
+
+            if cart_item
+
+            else 1
+
+        )
 
         return context

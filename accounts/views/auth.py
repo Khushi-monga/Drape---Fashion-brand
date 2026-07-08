@@ -157,7 +157,7 @@ class LoginView(FormView):
             form.add_error(None, "Invalid username or password.")
             return self.form_invalid(form)
 
-        return login_user_response(user)
+        return login_user_response(self.request, user)
     
 
 
@@ -209,7 +209,7 @@ class GoogleAuthView(View):
             user = get_or_create_google_user(id_info)
 
             # 3. login (JWT)
-            return login_user_response(user)
+            return login_user_response(request, user)
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)

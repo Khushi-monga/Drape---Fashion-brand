@@ -1,13 +1,14 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views import View
 
-from .services import CartService
+from .services.services import CartService
 
 
-class CartView(LoginRequiredMixin, View):
+class CartView(View):
+
+    template_name = "cart.html"
 
     def get(self, request):
 
@@ -15,14 +16,14 @@ class CartView(LoginRequiredMixin, View):
 
         return render(
             request,
-            "cart.html",
+            self.template_name,
             {
                 "cart": cart,
             },
         )
 
 
-class AddToCartView(LoginRequiredMixin, View):
+class AddToCartView(View):
 
     def post(self, request, product_id):
 
@@ -34,19 +35,26 @@ class AddToCartView(LoginRequiredMixin, View):
             quantity=quantity,
         )
 
-        messages.success(request, "Product added to cart.")
+        messages.success(
+            request,
+            "Product added to cart.",
+        )
 
         return redirect(
-            "product_detail",
-            slug=CartService._get_product(product_id).slug,
+            request.META.get(
+                "HTTP_REFERER",
+                "home",
+            )
         )
 
 
-class UpdateCartView(LoginRequiredMixin, View):
+class UpdateCartView(View):
 
     def post(self, request, product_id):
 
-        quantity = int(request.POST.get("quantity", 1))
+        quantity = int(
+            request.POST.get("quantity", 1)
+        )
 
         CartService.update(
             request=request,
@@ -54,12 +62,15 @@ class UpdateCartView(LoginRequiredMixin, View):
             quantity=quantity,
         )
 
-        messages.success(request, "Cart updated.")
+        messages.success(
+            request,
+            "Cart updated.",
+        )
 
         return redirect("cart:cart")
 
 
-class UpdateCartAjaxView(LoginRequiredMixin, View):
+class UpdateCartAjaxView(View):
 
     def post(self, request):
 
@@ -105,7 +116,7 @@ class UpdateCartAjaxView(LoginRequiredMixin, View):
             )
 
 
-class RemoveCartItemView(LoginRequiredMixin, View):
+class RemoveCartItemView(View):
 
     def post(self, request, product_id):
 
@@ -114,17 +125,23 @@ class RemoveCartItemView(LoginRequiredMixin, View):
             product_id=product_id,
         )
 
-        messages.success(request, "Product removed from cart.")
+        messages.success(
+            request,
+            "Product removed from cart.",
+        )
 
         return redirect("cart:cart")
 
 
-class ClearCartView(LoginRequiredMixin, View):
+class ClearCartView(View):
 
     def post(self, request):
 
         CartService.clear(request)
 
-        messages.success(request, "Cart cleared.")
+        messages.success(
+            request,
+            "Cart cleared.",
+        )
 
         return redirect("cart:cart")
