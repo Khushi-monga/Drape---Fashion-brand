@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from .views import (
     AddToCartView,
@@ -18,4 +18,5 @@ urlpatterns = [
     path("remove/<int:product_id>/", RemoveCartItemView.as_view(), name="remove"),
     path("clear/", ClearCartView.as_view(), name="clear"),
     path("update-ajax/",UpdateCartAjaxView.as_view(), name="update_ajax"),
+    path("orders/",include("orders.urls")),
 ]

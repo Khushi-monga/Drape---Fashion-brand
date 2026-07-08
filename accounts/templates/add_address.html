@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block extra_css %}
+
+<link 
+    rel="stylesheet"
+    href="{% static 'css/add_address.css' %}"
+>
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<div class="address-page">
+
+
+    <div class="address-form-card">
+
+
+        <h1>
+            Add New Address
+        </h1>
+
+
+
+        <form method="post">
+
+            {% csrf_token %}
+
+
+            {{ form.as_p }}
+
+
+
+            <button
+                type="submit"
+                class="save-address-btn"
+            >
+                Save Address
+            </button>
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

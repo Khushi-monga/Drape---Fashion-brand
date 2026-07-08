@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'accounts',
     'cart',
+    'orders',
 
     "products.apps.ProductsConfig"
 

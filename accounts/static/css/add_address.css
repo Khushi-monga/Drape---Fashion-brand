@@ -1,0 +1,119 @@
+.address-page {
+
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+
+}
+
+
+.address-form-card {
+
+    width: 100%;
+    max-width: 550px;
+
+    background: var(--surface, #ffffff);
+
+    padding: 35px;
+
+    border-radius: 16px;
+
+    border: 1px solid var(--border, #e8e6e3);
+
+}
+
+
+
+.address-form-card h1 {
+
+    color: var(--primary, #17253d);
+
+    margin-bottom: 25px;
+
+    font-size: 28px;
+
+}
+
+
+
+.address-form-card form p {
+
+    margin-bottom: 18px;
+
+}
+
+
+
+.address-form-card label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #252525;
+
+    font-weight: 500;
+
+}
+
+
+
+.address-form-card input,
+.address-form-card select {
+
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border-radius: 10px;
+
+    border: 1px solid #e8e6e3;
+
+    font-size: 15px;
+
+    outline: none;
+
+}
+
+
+
+.address-form-card input:focus,
+.address-form-card select:focus {
+
+    border-color: #6e8b74;
+
+}
+
+
+
+.save-address-btn {
+
+    width: 100%;
+
+    margin-top: 20px;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #17253d;
+
+    color: white;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+}
+
+
+
+.save-address-btn:hover {
+
+    opacity: 0.9;
+
+}
