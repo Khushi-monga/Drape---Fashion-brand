@@ -68,10 +68,24 @@ from django.db import models
 
 class Address(models.Model):
 
+    ADDRESS_TYPE_CHOICES = (
+        ("home", "Home"),
+        ("work", "Work"),
+        ("other", "Other"),
+    )
+
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="addresses"
+    )
+
+
+    title = models.CharField(
+        max_length=20,
+        choices=ADDRESS_TYPE_CHOICES,
+        default="home"
     )
 
 
@@ -126,12 +140,24 @@ class Address(models.Model):
     )
 
 
-    class Meta:
-        ordering = [
-            "-is_default",
-            "-created_at"
-        ]
+    def save(self, *args, **kwargs):
 
+        # If this is the user's first address,
+        # automatically make it the default.
+        if not self.pk and not Address.objects.filter(user=self.user).exists():
+            self.is_default = True
 
-    def __str__(self):
-        return f"{self.full_name} - {self.city}"
+        # If this address is being set as default,
+        # remove the default flag from all other addresses.
+        if self.is_default:
+
+            Address.objects.filter(
+                user=self.user,
+                is_default=True
+            ).exclude(
+                pk=self.pk
+            ).update(
+                is_default=False
+            )
+
+        super().save(*args, **kwargs)

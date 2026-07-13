@@ -1,285 +1,202 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block title %}
+Checkout
+{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
 {% endblock %}
 
-
-
 {% block content %}
-
 
 <div class="checkout-page">
 
-
     <div class="checkout-left">
 
+        <!-- Delivery Address -->
 
         <div class="checkout-card">
 
-            <h2>
-                Delivery Address
-            </h2>
+            <div class="checkout-card-header">
 
+                <h2>Delivery Address</h2>
 
-            <form 
-                id="checkout-form"
-                method="post"
-                action="{% url 'create-order' %}"
-            >
-
-                {% csrf_token %}
-
-
-                {% if addresses %}
-
-
-                    {% for address in addresses %}
-
-
-                    <label class="address-option">
-
-
-                        <input
-                            type="radio"
-                            name="address_id"
-                            value="{{ address.id }}"
-
-                            {% if address == default_address %}
-                                checked
-                            {% endif %}
-                        >
-
-
-                        <div class="address-content">
-
-
-                            <h3>
-                                {{ address.full_name }}
-                            </h3>
-
-
-                            <p>
-                                {{ address.phone }}
-                            </p>
-
-
-                            <p>
-                                {{ address.address_line_1 }}
-
-                                {% if address.address_line_2 %}
-                                    , {{ address.address_line_2 }}
-                                {% endif %}
-                            </p>
-
-
-                            <p>
-                                {{ address.city }},
-                                {{ address.state }}
-                                -
-                                {{ address.postal_code }}
-                            </p>
-
-
-                        </div>
-
-
-                    </label>
-
-
-                    {% endfor %}
-
-
-
-                {% else %}
-
-
-                    <p>
-                        No saved address found.
-                    </p>
-
-
+                {% if selected_address %}
+                <a
+                    href="{% url 'change-address' %}"
+                    class="change-address-btn"
+                >
+                    Select another address
+                </a>
                 {% endif %}
 
+            </div>
 
+            {% if selected_address %}
 
-                <a 
+            <div class="selected-address">
+
+                <div class="address-badge">
+                    {{ selected_address.get_title_display }}
+                </div>
+
+                <h3>
+                    {{ selected_address.full_name }}
+                </h3>
+
+                <p>{{ selected_address.phone }}</p>
+
+                <p>
+                    {{ selected_address.address_line_1 }}
+                    {% if selected_address.address_line_2 %}
+                        , {{ selected_address.address_line_2 }}
+                    {% endif %}
+                </p>
+
+                <p>
+                    {{ selected_address.city }},
+                    {{ selected_address.state }}
+                    -
+                    {{ selected_address.postal_code }}
+                </p>
+
+                <p>{{ selected_address.country }}</p>
+
+            </div>
+
+            {% else %}
+
+            <div class="no-address">
+
+                <p>No delivery address selected.</p>
+
+                <a
                     href="{% url 'add-address' %}"
                     class="add-address-btn"
                 >
-                    + Add New Address
+                    + Add Address
                 </a>
 
-
             </div>
 
-
-
-
-
-            <div class="checkout-card">
-
-
-                <h2>
-                    Order Items
-                </h2>
-
-
-
-                {% for item in items %}
-
-
-                <div class="checkout-product">
-
-
-                    <div class="product-info">
-
-                        <h3>
-                            {{ item.product.name }}
-                        </h3>
-
-
-                        <p>
-                            Quantity:
-                            {{ item.quantity }}
-                        </p>
-
-
-                    </div>
-
-
-
-                    <div class="product-price">
-
-
-                        <p>
-                            ₹{{ item.product.base_price }}
-                        </p>
-
-
-                        <p>
-
-                            Subtotal:
-
-                            ₹{{ item.subtotal|floatformat:2|add:"0" }}
-
-                        </p>
-
-
-                    </div>
-
-
-                </div>
-
-
-                {% empty %}
-
-
-                <p>
-                    Your cart is empty.
-                </p>
-
-
-                {% endfor %}
-
-
-
-            </div>
-
-
-        </form>
-
-
-    </div>
-
-
-
-
-
-    <div class="checkout-right">
-
-
-        <div class="checkout-card summary">
-
-
-            <h2>
-                Order Summary
-            </h2>
-
-
-
-            <div class="summary-row">
-
-                <span>
-                    Subtotal
-                </span>
-
-
-                <span>
-                    ₹{{ subtotal }}
-                </span>
-
-            </div>
-
-
-
-            <div class="summary-row">
-
-                <span>
-                    Shipping
-                </span>
-
-
-                <span>
-                    Free
-                </span>
-
-            </div>
-
-
-
-
-            <hr>
-
-
-
-            <div class="summary-total">
-
-
-                <span>
-                    Total
-                </span>
-
-
-                <span>
-                    ₹{{ subtotal }}
-                </span>
-
-
-            </div>
-
-
-
-            <button
-                type="submit"
-                form="checkout-form"
-                class="place-order-btn"
-            >
-
-                Place Order
-
-            </button>
-
+            {% endif %}
 
         </div>
 
 
+
+        <!-- Order Items -->
+
+        <div class="checkout-card">
+
+            <h2>Order Items</h2>
+
+            {% for item in items %}
+
+            <div class="checkout-product">
+
+                <div class="product-info">
+
+                    <h3>{{ item.product.name }}</h3>
+
+                    <p>
+                        Quantity:
+                        {{ item.quantity }}
+                    </p>
+
+                </div>
+
+                <div class="product-price">
+
+                    <p>
+                        ₹{{ item.product.base_price }}
+                    </p>
+
+                    <strong>
+                        ₹{{ item.subtotal }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <p>Your cart is empty.</p>
+
+            {% endfor %}
+
+        </div>
+
     </div>
 
 
-</div>
 
+
+
+    <!-- Order Summary -->
+
+    <div class="checkout-right">
+
+        <form
+            method="post"
+            action="{% url 'create-order' %}"
+        >
+
+            {% csrf_token %}
+
+            <div class="checkout-card summary">
+
+                <h2>Order Summary</h2>
+
+                <div class="summary-row">
+
+                    <span>Subtotal</span>
+
+                    <span>
+                        ₹{{ subtotal }}
+                    </span>
+
+                </div>
+
+                <div class="summary-row">
+
+                    <span>Shipping</span>
+
+                    <span>Free</span>
+
+                </div>
+
+                <hr>
+
+                <div class="summary-total">
+
+                    <span>Total</span>
+
+                    <span>
+                        ₹{{ subtotal }}
+                    </span>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="place-order-btn"
+                    {% if not selected_address %}
+                        disabled
+                    {% endif %}
+                >
+                    Place Order
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
 
 {% endblock %}

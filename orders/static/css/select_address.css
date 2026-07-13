@@ -1,0 +1,227 @@
+.change-address-page{
+
+    max-width:1000px;
+    margin:40px auto;
+    padding:0 20px;
+
+}
+
+.change-address-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:30px;
+
+}
+
+.change-address-header h1{
+
+    font-size:2rem;
+    color:var(--primary);
+
+}
+
+.add-address-btn{
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:12px 20px;
+
+    border-radius:10px;
+
+    background:var(--primary);
+    color:#fff;
+
+    text-decoration:none;
+    font-weight:600;
+
+    transition:.2s;
+
+}
+
+.add-address-btn:hover{
+
+    background:var(--primary-light);
+
+}
+
+.address-grid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(380px,1fr));
+    gap:24px;
+
+}
+
+.address-card{
+
+    background:#fff;
+
+    border:1px solid var(--border);
+
+    border-radius:16px;
+
+    padding:24px;
+
+    display:flex;
+    flex-direction:column;
+
+    transition:.2s;
+
+}
+
+.address-card:hover{
+
+    border-color:var(--primary);
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.address-top{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:18px;
+
+}
+
+.address-type{
+
+    display:inline-block;
+
+    padding:5px 14px;
+
+    border-radius:999px;
+
+    background:var(--burgundy-light);
+
+    color:var(--burgundy);
+
+    font-size:.85rem;
+    font-weight:600;
+
+}
+
+.default-badge{
+
+    display:inline-block;
+
+    padding:5px 12px;
+
+    border-radius:999px;
+
+    background:#e9f8ee;
+
+    color:#2e7d32;
+
+    font-size:.8rem;
+    font-weight:600;
+
+}
+
+.address-name{
+
+    font-size:1.1rem;
+    font-weight:600;
+
+    color:var(--primary);
+
+    margin-bottom:8px;
+
+}
+
+.address-details{
+
+    color:var(--secondary-text);
+
+    line-height:1.6;
+
+    margin-bottom:20px;
+
+}
+
+.address-actions{
+
+    margin-top:auto;
+
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+
+}
+
+.address-actions form{
+
+    margin:0;
+
+}
+
+.action-btn{
+
+    padding:10px 16px;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:.9rem;
+    font-weight:500;
+
+}
+
+.deliver-btn{
+
+    background:var(--primary);
+
+    color:#fff;
+
+}
+
+.deliver-btn:hover{
+
+    background:var(--primary-light);
+
+}
+
+.secondary-btn{
+
+    background:#fff;
+
+    border:1px solid var(--border);
+
+    color:var(--text);
+
+}
+
+.secondary-btn:hover{
+
+    border-color:var(--primary);
+
+}
+
+@media(max-width:768px){
+
+    .address-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .change-address-header{
+
+        flex-direction:column;
+        align-items:flex-start;
+        gap:18px;
+
+    }
+
+}

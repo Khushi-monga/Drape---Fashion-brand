@@ -24,136 +24,178 @@ class CheckoutView(LoginRequiredMixin, TemplateView):
             self.request
         )
 
-
         addresses = self.request.user.addresses.all()
 
+        selected_address = None
 
+        selected_id = self.request.session.get(
+            "checkout_address_id"
+        )
+
+        if selected_id:
+
+            selected_address = addresses.filter(
+                id=selected_id
+            ).first()
+
+        if not selected_address:
+
+            selected_address = addresses.filter(
+                is_default=True
+            ).first()
+
+        context["selected_address"] = selected_address
         context["items"] = items
-
         context["subtotal"] = CartService.subtotal(
             self.request
         )
+        return context
+    
 
-        context["addresses"] = addresses
+class ChangeAddressView(LoginRequiredMixin, TemplateView):
+
+    template_name = "select_address.html"
 
 
-        context["default_address"] = addresses.filter(
-            is_default=True
-        ).first()
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+
+
+        context["addresses"] = (
+            self.request.user.addresses.all()
+        )
 
 
         return context
+    
+
+from django.views import View
+
+
+class SelectCheckoutAddressView(LoginRequiredMixin, View):
+
+    def post(self, request, pk):
+
+        address = get_object_or_404(
+            Address,
+            pk=pk,
+            user=request.user,
+        )
+
+        request.session["checkout_address_id"] = address.id
+
+        return redirect("checkout")
 
 
 
 
 class CreateOrderView(LoginRequiredMixin, View):
+    pass
+    # @transaction.atomic
+    # def post(self, request):
+
+    #     address_id = request.POST.get(
+    #         "address_id"
+    #     )
 
 
-    @transaction.atomic
-    def post(self, request):
-
-        address_id = request.POST.get(
-            "address_id"
-        )
-
-
-        address = get_object_or_404(
-            Address,
-            id=address_id,
-            user=request.user
-        )
+    #     address = get_object_or_404(
+    #         Address,
+    #         id=address_id,
+    #         user=request.user
+    #     )
 
 
-        items = CartService.get_items(
-            request
-        )
+    #     items = CartService.get_items(
+    #         request
+    #     )
 
 
-        if not items:
-            return redirect(
-                "cart-view"
-            )
+    #     if not items:
+    #         return redirect(
+    #             "cart-view"
+    #         )
 
 
-        subtotal = CartService.subtotal(
-            request
-        )
+    #     subtotal = CartService.subtotal(
+    #         request
+    #     )
 
 
-        order = Order.objects.create(
+    #     order = Order.objects.create(
 
-            user=request.user,
+    #         user=request.user,
 
-            full_name=address.full_name,
+    #         full_name=address.full_name,
 
-            phone=address.phone,
+    #         phone=address.phone,
 
-            address_line_1=address.address_line_1,
+    #         address_line_1=address.address_line_1,
 
-            address_line_2=address.address_line_2,
+    #         address_line_2=address.address_line_2,
 
-            city=address.city,
+    #         city=address.city,
 
-            state=address.state,
+    #         state=address.state,
 
-            postal_code=address.postal_code,
+    #         postal_code=address.postal_code,
 
-            country=address.country,
+    #         country=address.country,
 
-            subtotal=subtotal,
+    #         subtotal=subtotal,
 
-            shipping_cost=0,
+    #         shipping_cost=0,
 
-            total_amount=subtotal,
+    #         total_amount=subtotal,
 
-        )
-
-
-        order_items = []
+    #     )
 
 
-        for item in items:
-
-            item_subtotal = (
-                item.product.base_price
-                *
-                item.quantity
-            )
+    #     order_items = []
 
 
-            order_items.append(
+    #     for item in items:
 
-                OrderItem(
-
-                    order=order,
-
-                    product=item.product,
-
-                    product_name=item.product.name,
-
-                    price=item.product.base_price,
-
-                    quantity=item.quantity,
-
-                    subtotal=item_subtotal,
-
-                )
-
-            )
+    #         item_subtotal = (
+    #             item.product.base_price
+    #             *
+    #             item.quantity
+    #         )
 
 
-        OrderItem.objects.bulk_create(
-            order_items
-        )
+    #         order_items.append(
+
+    #             OrderItem(
+
+    #                 order=order,
+
+    #                 product=item.product,
+
+    #                 product_name=item.product.name,
+
+    #                 price=item.product.base_price,
+
+    #                 quantity=item.quantity,
+
+    #                 subtotal=item_subtotal,
+
+    #             )
+
+    #         )
 
 
-        CartService.clear(
-            request
-        )
+    #     OrderItem.objects.bulk_create(
+    #         order_items
+    #     )
 
 
-        return redirect(
-            "order-success",
-            order_id=order.id
-        )
+    #     CartService.clear(
+    #         request
+    #     )
+
+
+    #     return redirect(
+    #         "order-success",
+    #         order_id=order.id
+    #     )

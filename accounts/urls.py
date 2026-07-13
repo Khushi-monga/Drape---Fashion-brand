@@ -27,7 +27,10 @@ from accounts.views.social_auth import(
     GoogleCallbackView
 )
 
-from accounts.views.views import AddAddressView
+from accounts.views.views import (
+    AddAddressView,
+    SetDefaultAddressView
+)
 
 urlpatterns = [
     path("register/", RegisterView.as_view(), name="register"),
@@ -41,4 +44,5 @@ urlpatterns = [
     path("password-reset-verify/",PasswordResetOTPView.as_view(),name="password_reset_verify",),
     path("reset-password/",ResetPasswordView.as_view(),name="reset_password",),
     path("add-address/",AddAddressView.as_view(),name="add-address"),
+    path("address/<int:pk>/default/",SetDefaultAddressView.as_view(),name="set-default-address"),
 ]

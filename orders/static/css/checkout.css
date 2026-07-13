@@ -168,3 +168,92 @@
     font-size: 16px;
 
 }
+
+.checkout-card-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+
+}
+
+.change-address-btn{
+
+    padding:8px 18px;
+    border:1px solid var(--primary);
+    border-radius:8px;
+
+    background:white;
+
+    color:var(--primary);
+
+    text-decoration:none;
+
+    font-size:14px;
+    font-weight:600;
+
+    transition:.2s;
+
+}
+
+.change-address-btn:hover{
+
+    background:var(--primary);
+    color:white;
+
+}
+
+
+
+.selected-address{
+
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:22px;
+
+    background:#fafafa;
+
+}
+
+
+
+.address-badge{
+
+    display:inline-block;
+
+    padding:4px 12px;
+
+    margin-bottom:12px;
+
+    border-radius:20px;
+
+    background:var(--burgundy-light);
+
+    color:var(--burgundy);
+
+    font-size:13px;
+    font-weight:600;
+
+}
+
+
+
+.selected-address h3{
+
+    margin-bottom:8px;
+    color:var(--primary);
+
+}
+
+
+
+.selected-address p{
+
+    margin:6px 0;
+
+    color:var(--secondary-text);
+
+    line-height:1.5;
+
+}

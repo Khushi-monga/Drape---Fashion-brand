@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Select Address
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/select_address.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="change-address-page">
+
+    <div class="change-address-header">
+
+        <h1>Select Delivery Address</h1>
+
+        <a
+            href="{% url 'add-address' %}"
+            class="add-address-btn"
+        >
+            + Add Address
+        </a>
+
+    </div>
+
+
+    {% if addresses %}
+
+    <div class="address-grid">
+
+        {% for address in addresses %}
+
+        <div class="address-card">
+
+            <div class="address-top">
+
+                <span class="address-type">
+                    {{ address.get_title_display }}
+                </span>
+
+                {% if address.is_default %}
+                <span class="default-badge">
+                    Default
+                </span>
+                {% endif %}
+
+            </div>
+
+
+            <div class="address-name">
+                {{ address.full_name }}
+            </div>
+
+
+            <div class="address-details">
+
+                <p>{{ address.phone }}</p>
+
+                <p>
+                    {{ address.address_line_1 }}
+                    {% if address.address_line_2 %}
+                        , {{ address.address_line_2 }}
+                    {% endif %}
+                </p>
+
+                <p>
+                    {{ address.city }},
+                    {{ address.state }}
+                    -
+                    {{ address.postal_code }}
+                </p>
+
+                <p>{{ address.country }}</p>
+
+            </div>
+
+
+            <div class="address-actions">
+
+                <form
+                    method="post"
+                    action="{% url 'select-checkout-address' address.id %}"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="action-btn deliver-btn"
+                    >
+                        Deliver Here
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="address-card">
+
+        <h3>No saved addresses.</h3>
+
+        <p>
+            Add an address to continue with checkout.
+        </p>
+
+        <a
+            href="{% url 'add-address' %}"
+            class="add-address-btn"
+        >
+            Add Address
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
